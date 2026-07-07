@@ -44,7 +44,12 @@ html[lang=en] .nav-actions{order:3;border-left:1px solid var(--line);flex-direct
 .cart-btn svg{width:19px;height:19px;stroke:var(--ink);stroke-width:1.5;fill:none}
 .cart-badge{position:absolute;top:8px;right:8px;background:var(--ink);color:#fff;font-size:9px;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
 .cart-badge.show{opacity:1}
-.nav-pages-wrap{display:none}
+.nav-pages-wrap{display:flex;align-items:center;height:100%;overflow-x:auto;scrollbar-width:none;flex:1;order:2}
+.nav-pages-wrap::-webkit-scrollbar{display:none}
+html[lang=ar] .nav-pages-wrap{flex-direction:row-reverse}
+.nav-page-btn{background:none;border:none;border-right:1px solid var(--line);padding:0 1rem;font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);height:100%;transition:all .2s;white-space:nowrap;flex-shrink:0}
+html[lang=ar] .nav-page-btn{border-right:none;border-left:1px solid var(--line)}
+.nav-page-btn:hover,.nav-page-btn.active-nav{background:var(--ink);color:var(--white)}
 .nav-logo-wrap{display:flex;align-items:center;justify-content:center;height:100%;flex-shrink:0;padding:0 1.25rem}
 html[lang=ar] .nav-logo-wrap{order:3;border-left:1px solid var(--line)}
 html[lang=en] .nav-logo-wrap{order:1;border-right:1px solid var(--line)}
@@ -355,6 +360,7 @@ html[lang=en] .c-drawer.open{transform:translateX(0)}
 .page-logo img{height:60px;width:auto}
 
 @media(max-width:768px){
+  .nav-pages-wrap{display:none}
   .home-hero{grid-template-columns:1fr;height:auto;max-height:none;gap:.5rem;padding:0 .75rem;margin:1rem auto}
   .home-panel{height:52vw;min-height:200px;max-height:280px}
   .home-panel-overlay{padding:1rem}
