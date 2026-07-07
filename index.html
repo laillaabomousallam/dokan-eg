@@ -33,16 +33,18 @@ nav{
   display:flex;align-items:center;height:52px;direction:ltr;
 }
 .nav-actions{display:flex;align-items:center;height:100%;flex-shrink:0}
-html[lang=ar] .nav-actions{order:1;border-right:1px solid var(--line);flex-direction:row}
-html[lang=en] .nav-actions{order:3;border-left:1px solid var(--line);flex-direction:row-reverse}
-.menu-btn{background:none;border:none;padding:0 16px;height:100%;display:flex;align-items:center;color:var(--ink);transition:background .15s;border-right:1px solid var(--line)}
+html[lang=ar] .nav-actions{order:3;border-left:1px solid var(--line);flex-direction:row-reverse}
+html[lang=en] .nav-actions{order:1;border-right:1px solid var(--line);flex-direction:row}
+.menu-btn{background:none;border:none;padding:0 16px;height:100%;display:flex;align-items:center;color:var(--ink);transition:background .15s;border-left:1px solid var(--line)}
+html[lang=en] .menu-btn{border-left:none;border-right:1px solid var(--line)}
 .menu-btn svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none}
 .menu-btn:hover{background:var(--dust)}
-.lang-btn{background:none;border:none;padding:0 14px;font-size:.7rem;font-weight:600;letter-spacing:.12em;height:100%;color:var(--mid);transition:all .2s;border-right:1px solid var(--line)}
+.lang-btn{background:none;border:none;padding:0 14px;font-size:.7rem;font-weight:600;letter-spacing:.12em;height:100%;color:var(--mid);transition:all .2s;border-left:1px solid var(--line)}
+html[lang=en] .lang-btn{border-left:none;border-right:1px solid var(--line)}
 .lang-btn:hover{background:var(--ink);color:var(--white)}
-.cart-btn{position:relative;background:none;border:none;padding:0 14px;display:flex;align-items:center;height:100%}
-.cart-btn svg{width:19px;height:19px;stroke:var(--ink);stroke-width:1.5;fill:none}
-.cart-badge{position:absolute;top:8px;right:8px;background:var(--ink);color:#fff;font-size:9px;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
+.cart-btn{position:relative;background:none;border:none;padding:0 14px;display:flex;align-items:center;height:100%;font-size:1.25rem;line-height:1}
+.cart-btn svg{display:block;width:20px;height:20px}
+.cart-badge{position:absolute;top:6px;right:6px;background:var(--ink);color:#fff;font-size:9px;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
 .cart-badge.show{opacity:1}
 .nav-pages-wrap{display:flex;align-items:center;height:100%;overflow-x:auto;scrollbar-width:none;flex:1;order:2}
 .nav-pages-wrap::-webkit-scrollbar{display:none}
@@ -51,8 +53,8 @@ html[lang=ar] .nav-pages-wrap{flex-direction:row-reverse}
 html[lang=ar] .nav-page-btn{border-right:none;border-left:1px solid var(--line)}
 .nav-page-btn:hover,.nav-page-btn.active-nav{background:var(--ink);color:var(--white)}
 .nav-logo-wrap{display:flex;align-items:center;justify-content:center;height:100%;flex-shrink:0;padding:0 1.25rem}
-html[lang=ar] .nav-logo-wrap{order:3;border-left:1px solid var(--line)}
-html[lang=en] .nav-logo-wrap{order:1;border-right:1px solid var(--line)}
+html[lang=ar] .nav-logo-wrap{order:1;border-right:1px solid var(--line)}
+html[lang=en] .nav-logo-wrap{order:3;border-left:1px solid var(--line)}
 .nav-logo-wrap button{background:none;border:none;display:flex;align-items:center}
 .nav-logo-wrap img{height:24px;width:auto}
 
@@ -394,7 +396,10 @@ html[lang=en] .c-drawer.open{transform:translateX(0)}
     </button>
     <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
     <button class="cart-btn" id="cartBtn">
-      <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 001.98 1.61h9.72a2 2 0 001.98-1.61L23 6H6"/>
+      </svg>
       <span class="cart-badge" id="cartBadge">0</span>
     </button>
   </div>
