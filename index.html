@@ -1097,11 +1097,11 @@ const IMG={
 function mc(d){return COLORS.map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,img:IMG[c.key][d]}))}
 
 const PRODUCTS=[
-  {id:1,cat:'half',nameAr:'تيشرت دكان',nameEn:'Dokan Tee',descAr:'اوفر سايز يونيسيكس — طباعة الدكانة الأصيلة على الظهر — قطن 100%',descEn:'Oversized unisex — iconic Dokan shop print on back — 100% cotton',price:650,badge:'new',sizes:['S','M','L','XL','XXL'],colors:mc('Dokan')},
+  {id:1,cat:'half',nameAr:'تيشرت دكان',nameEn:'Dokan Tee',descAr:'اوفر سايز يونيسيكس — طباعة الدكانة الأصيلة على الظهر — قطن 100%',descEn:'Oversized unisex — iconic Dokan shop print on back — 100% cotton',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Dokan')},
   {id:2,cat:'half',nameAr:'تيشرت 80s ريترو',nameEn:'80s Retro Tee',descAr:'اوفر سايز يونيسيكس — تصميم الثمانينات الكلاسيكي',descEn:'Oversized unisex — retro 80s collage design',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
   {id:3,cat:'half',nameAr:'تيشرت جرافيتي',nameEn:'Graffiti Tee',descAr:'اوفر سايز يونيسيكس — طباعة جرافيتي — برق على الكم',descEn:'Oversized unisex — graffiti print — lightning bolt sleeve',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
   {id:4,cat:'half',nameAr:'تيشرت English',nameEn:'English Tee',descAr:'اوفر سايز يونيسيكس',descEn:'Oversized unisex',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
-  {id:5,cat:'full',nameAr:'حجابي — دكان',nameEn:'Hijabi — Dokan',descAr:'بكم طويل اوفر سايز للمحجبات — طباعة الدكانة',descEn:'Oversized long sleeve — Hijabi — Dokan print',price:700,badge:'new',sizes:['S','M','L','XL','XXL'],colors:mc('Dokan')},
+  {id:5,cat:'full',nameAr:'حجابي — دكان',nameEn:'Hijabi — Dokan',descAr:'بكم طويل اوفر سايز للمحجبات — طباعة الدكانة',descEn:'Oversized long sleeve — Hijabi — Dokan print',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Dokan')},
   {id:6,cat:'full',nameAr:'حجابي — 80s ريترو',nameEn:'Hijabi — 80s Retro',descAr:'بكم طويل اوفر سايز للمحجبات — تصميم الثمانينات',descEn:'Oversized long sleeve — Hijabi — 80s design',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
   {id:7,cat:'full',nameAr:'حجابي — جرافيتي',nameEn:'Hijabi — Graffiti',descAr:'بكم طويل اوفر سايز للمحجبات — طباعة جرافيتي',descEn:'Oversized long sleeve — Hijabi — graffiti print',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
   {id:8,cat:'full',nameAr:'حجابي — English',nameEn:'Hijabi — English',descAr:'بكم طويل اوفر سايز للمحجبات',descEn:'Oversized long sleeve — Hijabi',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
@@ -1175,7 +1175,7 @@ function closeSidebar(){document.getElementById('sidebar').classList.remove('ope
 function makeCard(p){
   const c=p.colors[0],name=lang==='ar'?p.nameAr:p.nameEn;
   const cat=lang==='ar'?(p.cat==='half'?'نص كم — يونيسيكس':'كم طويل — محجبات'):(p.cat==='half'?'Half Sleeve — Unisex':'Long Sleeve — Hijabi');
-  const badge=p.badge==='new'?(lang==='ar'?'جديد':'New'):'';
+  const badge='';
   const available=isProductAvailable(p);
   const isFav=favorites.includes(p.id);
   const buyTxt=lang==='ar'?(available?'اشتري دلوقتي':'Sold Out'):(available?'Buy Now':'Sold Out');
