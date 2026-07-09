@@ -34,6 +34,18 @@ nav{
   display:flex;align-items:center;height:52px;
   direction:ltr;
 }
+/* زرار رجوع */
+.back-float{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:38px;height:38px;border-radius:50%;
+  background:#f2f2f2;border:none;cursor:pointer;
+  margin-top:1.5rem;margin-left:2.5rem;margin-right:auto;
+  transition:background .2s;flex-shrink:0;
+  direction:ltr;
+}
+.back-float:hover{background:#e0e0e0}
+.back-float svg{width:16px;height:16px;stroke:var(--ink);stroke-width:2;fill:none}
+@media(max-width:768px){.back-float{margin-top:1rem;margin-left:1rem}}
 /* لوجو: عربي=يسار(order1) | إنجليزي=يمين(order3) */
 .nav-logo-wrap{
   display:flex;align-items:center;justify-content:center;
@@ -184,11 +196,10 @@ html[lang=en] .sidebar.open{transform:translateX(0)}
 .card-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.25,.46,.45,.94)}
 .card:hover .card-img img{transform:scale(1.05)}
 .card-badge{
-  position:absolute;top:10px;background:var(--ink);color:#fff;
+  position:absolute;top:10px;left:10px;
+  background:var(--ink);color:#fff;
   font-size:.55rem;padding:3px 8px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;
 }
-html[lang=ar] .card-badge{right:10px}
-html[lang=en] .card-badge{left:10px}
 .card-name{font-size:.88rem;font-weight:500;margin-bottom:3px;line-height:1.3}
 .card-cat{font-size:.65rem;color:var(--muted);letter-spacing:.05em;margin-bottom:.6rem}
 .card-bottom{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}
@@ -217,13 +228,17 @@ html[lang=en] .card-badge{left:10px}
 .gallery-thumbs{display:flex;gap:4px;padding:8px;background:var(--white);border-top:1px solid var(--line);overflow-x:auto}
 .thumb{width:52px;height:52px;object-fit:cover;flex-shrink:0;border:2px solid transparent;cursor:pointer;opacity:.45;transition:all .2s}
 .thumb.active{border-color:var(--ink);opacity:1}
-.prod-info{padding:3rem 2.5rem;overflow-y:auto;max-height:calc(100vh - 52px)}
+.prod-info{padding:3rem 2.5rem 3rem 5rem;overflow-y:auto;max-height:calc(100vh - 52px);position:relative}
 .back-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  background:none;border:none;font-size:.65rem;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--muted);margin-bottom:2rem;transition:color .2s;
+  position:fixed;top:62px;left:12px;
+  display:none;align-items:center;justify-content:center;
+  width:38px;height:38px;border-radius:50%;
+  background:#f2f2f2;border:none;cursor:pointer;
+  transition:background .2s;z-index:150;
 }
-.back-btn:hover{color:var(--ink)}
+.back-btn.show{display:inline-flex}
+.back-btn:hover{background:#e0e0e0}
+.back-btn svg{width:16px;height:16px;stroke:var(--ink);stroke-width:2;fill:none}
 .prod-name{font-family:var(--display);font-size:clamp(1.4rem,2.5vw,2.2rem);font-weight:400;line-height:1.15;margin-bottom:.5rem;letter-spacing:-.01em}
 .prod-price{font-size:1.1rem;font-weight:600;margin-bottom:.5rem}
 .prod-cat{font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.5rem}
@@ -374,18 +389,55 @@ html[lang=en] .c-drawer.open{transform:translateX(0)}
 /* ─── TOAST ─── */
 .toast{
   position:fixed;bottom:2rem;left:50%;
-  transform:translateX(-50%) translateY(1.5rem);
-  background:var(--ink);color:#fff;
-  padding:12px 20px;font-size:.75rem;
-  display:flex;gap:12px;align-items:center;
-  z-index:500;opacity:0;transition:all .3s;
+  transform:translateX(-50%) translateY(2rem);
+  background:var(--paper);color:var(--ink);
+  border:1px solid var(--line);
+  border-radius:50px;
+  padding:10px 18px 10px 14px;font-size:.75rem;
+  display:flex;gap:10px;align-items:center;
+  z-index:500;opacity:0;transition:all .3s cubic-bezier(.25,.46,.45,.94);
   pointer-events:none;white-space:nowrap;
+  box-shadow:0 4px 24px rgba(0,0,0,.12);
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all}
-.t-co{background:none;border:1px solid rgba(255,255,255,.35);color:#fff;padding:5px 12px;font-size:.68rem;font-weight:600;letter-spacing:.08em}
-.t-view{background:none;border:none;color:rgba(255,255,255,.55);font-size:.68rem;text-decoration:underline}
+.toast-dot{width:8px;height:8px;border-radius:50%;background:#0a0a0a;flex-shrink:0}
+.t-co{
+  background:#0a0a0a;border:none;color:#fff;
+  padding:6px 14px;font-size:.65rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  border-radius:50px;cursor:pointer;transition:background .2s;
+}
+.t-co:hover{background:#333}
+.t-view{background:none;border:none;color:var(--muted);font-size:.68rem;cursor:pointer;text-decoration:underline;padding:0}
 
-/* ─── PAGE LOGO ─── */
+/* ─── CUSTOM DROPDOWN ─── */
+.cd-wrap{position:relative;width:100%}
+.cd-trigger{
+  width:100%;background:#f2f2f2;border:none;border-radius:20px;
+  padding:12px 18px;font-size:.85rem;font-family:inherit;
+  color:var(--ink);outline:none;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  transition:background .2s;
+}
+.cd-trigger.placeholder{color:#aaa}
+.cd-trigger:hover{background:#e8e8e8}
+.cd-arrow{font-size:.7rem;color:var(--muted);transition:transform .2s;flex-shrink:0}
+.cd-wrap.open .cd-arrow{transform:rotate(180deg)}
+.cd-panel{
+  position:absolute;top:calc(100% + 6px);left:0;right:0;
+  background:var(--white);border:1px solid var(--line);border-radius:16px;
+  max-height:220px;overflow-y:auto;z-index:300;display:none;
+  box-shadow:0 8px 24px rgba(0,0,0,.1);
+}
+.cd-wrap.open .cd-panel{display:block}
+.cd-opt{
+  padding:11px 18px;font-size:.83rem;cursor:pointer;color:var(--ink);
+  transition:background .15s;
+}
+.cd-opt:first-child{border-radius:16px 16px 0 0}
+.cd-opt:last-child{border-radius:0 0 16px 16px}
+.cd-opt:hover{background:#f2f2f2}
+.cd-opt.selected{font-weight:600;color:var(--ink);background:#f2f2f2}
 .page-logo{display:flex;justify-content:center;padding:2.5rem 0 0;margin-bottom:0}
 .page-logo img{height:60px;width:auto}
 
@@ -566,6 +618,11 @@ html[lang=en] .contact-layout > div:last-child{order:1}
   <div class="nav-pages-wrap" id="navPages"></div>
 </nav>
 
+<!-- زرار رجوع ثابت لكل الموقع -->
+<button class="back-btn" id="backBtn" onclick="navGoBack()">
+  <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+
 <!-- SIDEBAR -->
 <div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
 <div class="sidebar" id="sidebar">
@@ -643,6 +700,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
 
 <!-- OVERSIZED -->
 <div class="view" id="view-oversized">
+  
   <div class="page-logo">
     <img id="shopLogoAr1" src="imgs/logo.ar.png" alt="دكان"/>
     <img id="shopLogoEn1" src="imgs/logo.eng.png" alt="Dokan" style="display:none"/>
@@ -658,6 +716,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
 
 <!-- HIJABI -->
 <div class="view" id="view-hijabi">
+  
   <div class="page-logo">
     <img id="shopLogoAr2" src="imgs/logo.ar.png" alt="دكان"/>
     <img id="shopLogoEn2" src="imgs/logo.eng.png" alt="Dokan" style="display:none"/>
@@ -679,10 +738,6 @@ html[lang=en] .contact-layout > div:last-child{order:1}
       <div class="gallery-thumbs" id="thumbsRow"></div>
     </div>
     <div class="prod-info">
-      <button class="back-btn" id="backBtn">
-        <span id="backArrow">←</span>
-        <span class="t" data-ar="رجوع" data-en="Back"></span>
-      </button>
       <div class="prod-name" id="prodName"></div>
       <div class="prod-price" id="prodPrice"></div>
       <div class="prod-cat" id="prodCat"></div>
@@ -711,6 +766,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
 
 <!-- SIZE CHART -->
 <div class="view" id="view-sizechart">
+  
   <div class="page-logo">
     <img id="shopLogoAr4" src="imgs/logo.ar.png" alt="دكان"/>
     <img id="shopLogoEn4" src="imgs/logo.eng.png" alt="Dokan" style="display:none"/>
@@ -759,6 +815,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
 
 <!-- CHECKOUT -->
 <div class="view" id="view-checkout">
+  
   <div class="page-logo">
     <img id="shopLogoAr5" src="imgs/logo.ar.png" alt="دكان"/>
     <img id="shopLogoEn5" src="imgs/logo.eng.png" alt="Dokan" style="display:none"/>
@@ -778,23 +835,42 @@ html[lang=en] .contact-layout > div:last-child{order:1}
         <div class="field-row full">
           <div class="field">
             <label class="t" data-ar="المحافظة" data-en="Governorate"></label>
-            <select id="coGov">
-              <option value="">—</option>
-              <option>القاهرة / Cairo</option><option>الجيزة / Giza</option>
-              <option>الإسكندرية / Alexandria</option><option>المنصورة / Mansoura</option>
-              <option>طنطا / Tanta</option><option>أسيوط / Asyut</option>
-              <option>أسوان / Aswan</option><option>الأقصر / Luxor</option>
-              <option>الإسماعيلية / Ismailia</option><option>بورسعيد / Port Said</option>
-              <option>السويس / Suez</option><option>الشرقية / Sharkia</option>
-              <option>الدقهلية / Dakahlia</option><option>البحيرة / Beheira</option>
-              <option>كفر الشيخ / Kafr El Sheikh</option><option>الغربية / Gharbia</option>
-              <option>المنوفية / Monufia</option><option>الفيوم / Fayoum</option>
-              <option>بني سويف / Beni Suef</option><option>المنيا / Minya</option>
-              <option>قنا / Qena</option><option>سوهاج / Sohag</option>
-              <option>شمال سيناء / North Sinai</option><option>جنوب سيناء / South Sinai</option>
-              <option>البحر الأحمر / Red Sea</option><option>مطروح / Matrouh</option>
-              <option>الوادي الجديد / New Valley</option>
-            </select>
+            <div class="cd-wrap" id="govDrop">
+              <button type="button" class="cd-trigger placeholder" id="govTrigger">
+                <span id="govLabel" class="t" data-ar="اختر المحافظة" data-en="Select Governorate"></span>
+                <span class="cd-arrow">▼</span>
+              </button>
+              <div class="cd-panel" id="govPanel">
+                <div class="cd-opt" data-val="القاهرة / Cairo">القاهرة / Cairo</div>
+                <div class="cd-opt" data-val="الجيزة / Giza">الجيزة / Giza</div>
+                <div class="cd-opt" data-val="الإسكندرية / Alexandria">الإسكندرية / Alexandria</div>
+                <div class="cd-opt" data-val="المنصورة / Mansoura">المنصورة / Mansoura</div>
+                <div class="cd-opt" data-val="طنطا / Tanta">طنطا / Tanta</div>
+                <div class="cd-opt" data-val="أسيوط / Asyut">أسيوط / Asyut</div>
+                <div class="cd-opt" data-val="أسوان / Aswan">أسوان / Aswan</div>
+                <div class="cd-opt" data-val="الأقصر / Luxor">الأقصر / Luxor</div>
+                <div class="cd-opt" data-val="الإسماعيلية / Ismailia">الإسماعيلية / Ismailia</div>
+                <div class="cd-opt" data-val="بورسعيد / Port Said">بورسعيد / Port Said</div>
+                <div class="cd-opt" data-val="السويس / Suez">السويس / Suez</div>
+                <div class="cd-opt" data-val="الشرقية / Sharkia">الشرقية / Sharkia</div>
+                <div class="cd-opt" data-val="الدقهلية / Dakahlia">الدقهلية / Dakahlia</div>
+                <div class="cd-opt" data-val="البحيرة / Beheira">البحيرة / Beheira</div>
+                <div class="cd-opt" data-val="كفر الشيخ / Kafr El Sheikh">كفر الشيخ / Kafr El Sheikh</div>
+                <div class="cd-opt" data-val="الغربية / Gharbia">الغربية / Gharbia</div>
+                <div class="cd-opt" data-val="المنوفية / Monufia">المنوفية / Monufia</div>
+                <div class="cd-opt" data-val="الفيوم / Fayoum">الفيوم / Fayoum</div>
+                <div class="cd-opt" data-val="بني سويف / Beni Suef">بني سويف / Beni Suef</div>
+                <div class="cd-opt" data-val="المنيا / Minya">المنيا / Minya</div>
+                <div class="cd-opt" data-val="قنا / Qena">قنا / Qena</div>
+                <div class="cd-opt" data-val="سوهاج / Sohag">سوهاج / Sohag</div>
+                <div class="cd-opt" data-val="شمال سيناء / North Sinai">شمال سيناء / North Sinai</div>
+                <div class="cd-opt" data-val="جنوب سيناء / South Sinai">جنوب سيناء / South Sinai</div>
+                <div class="cd-opt" data-val="البحر الأحمر / Red Sea">البحر الأحمر / Red Sea</div>
+                <div class="cd-opt" data-val="مطروح / Matrouh">مطروح / Matrouh</div>
+                <div class="cd-opt" data-val="الوادي الجديد / New Valley">الوادي الجديد / New Valley</div>
+              </div>
+            </div>
+            <input type="hidden" id="coGov"/>
           </div>
         </div>
         <div class="field-row full">
@@ -860,6 +936,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
 
 <!-- FAVORITES -->
 <div class="view" id="view-favorites">
+  
   <div class="page-logo">
     <img id="shopLogoAr6" src="imgs/logo.ar.png" alt="دكان"/>
     <img id="shopLogoEn6" src="imgs/logo.eng.png" alt="Dokan" style="display:none"/>
@@ -893,6 +970,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
 
 <!-- CONTACT -->
 <div class="view" id="view-contact">
+  
   <div class="page-logo">
     <img src="imgs/logo.ar.png" alt="دكان" id="shopLogoAr7"/>
     <img src="imgs/logo.eng.png" alt="Dokan" id="shopLogoEn7" style="display:none"/>
@@ -995,6 +1073,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
 
 <!-- TOAST -->
 <div class="toast" id="toast">
+  <span class="toast-dot"></span>
   <span id="toastTxt"></span>
   <button class="t-co" onclick="closeToast();goCheckout()" id="toastCo"></button>
   <button class="t-view" onclick="closeToast();openCart()" id="toastView"></button>
@@ -1029,6 +1108,31 @@ const PRODUCTS=[
 ];
 
 let lang='ar',cart=[],cur=null,selColor=0,selSize=null,qty=1,prevView='home',toastTimer=null;
+let viewHistory=[];  // تاريخ الصفحات
+
+function showView(n){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+n).classList.add('active');
+  if(!['product','checkout','success'].includes(n))prevView=n;
+  // أظهر/أخفي زرار الرجوع
+  const btn=document.getElementById('backBtn');
+  if(n==='home') btn.classList.remove('show');
+  else btn.classList.add('show');
+  const last=viewHistory[viewHistory.length-1];
+  if(last!==n) viewHistory.push(n);
+  if(viewHistory.length>20) viewHistory.shift();
+  window.scrollTo(0,0);
+}
+
+function navGoBack(){
+  // شيل الصفحة الحالية
+  viewHistory.pop();
+  const prev=viewHistory[viewHistory.length-1]||'home';
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+prev).classList.add('active');
+  if(!['product','checkout','success'].includes(prev))prevView=prev;
+  window.scrollTo(0,0);
+}
 let inventory={};  // {productId_size: quantity}
 let favorites=JSON.parse(localStorage.getItem('dokan_favs')||'[]');
 
@@ -1058,17 +1162,11 @@ function applyLang(){
   ['logoImgEn','shopLogoEn1','shopLogoEn2','shopLogoEn4','shopLogoEn5','shopLogoEn6','shopLogoEn7'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=lang==='en'?'block':'none'});
   document.querySelectorAll('.t[data-ar-placeholder]').forEach(el=>{el.placeholder=lang==='ar'?el.dataset.arPlaceholder:el.dataset.enPlaceholder});
   const ctBtn=document.getElementById('ctSubmit');if(ctBtn)ctBtn.textContent=lang==='ar'?'إرسال':'Send Message';
-  document.getElementById('backArrow').textContent=lang==='ar'?'←':'→';
+  const ba=document.getElementById('backArrow');if(ba)ba.textContent=lang==='ar'?'←':'→';
   renderGrids();if(cur)renderProd(cur);renderCart();renderCheckout();
 }
 function toggleLang(){lang=lang==='ar'?'en':'ar';applyLang()}
 
-function showView(n){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.getElementById('view-'+n).classList.add('active');
-  if(!['product','checkout','success'].includes(n))prevView=n;
-  window.scrollTo(0,0);
-}
 function goHome(){showView('home')}
 function setActiveNav(b){document.querySelectorAll('.nav-page-btn').forEach(x=>x.classList.remove('active-nav'));if(b)b.classList.add('active-nav')}
 function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('sbOverlay').classList.add('open');document.getElementById('sbCartCount').textContent=cart.reduce((a,i)=>a+i.qty,0)+' items'}
@@ -1133,6 +1231,7 @@ function renderFavs(){
 function openProduct(id){
   cur=PRODUCTS.find(p=>p.id===id);selColor=0;selSize=cur.sizes[1]||cur.sizes[0];qty=1;
   renderProd(cur);showView('product');
+  document.getElementById('backBtn').classList.add('show');
 }
 function renderProd(p){
   const col=p.colors[selColor];
@@ -1165,7 +1264,7 @@ function switchColor(i){
 function selectSize(s){selSize=s;document.querySelectorAll('.sz').forEach(el=>el.classList.toggle('active',el.textContent===s))}
 document.getElementById('qtyMinus').onclick=()=>{if(qty>1){qty--;document.getElementById('qtyVal').value=qty}};
 document.getElementById('qtyPlus').onclick=()=>{if(qty<10){qty++;document.getElementById('qtyVal').value=qty}};
-document.getElementById('backBtn').onclick=()=>showView(prevView);
+  // backBtn already has onclick in HTML
 document.getElementById('addCartBtn').onclick=()=>{if(cur)addToCart(cur,selSize,cur.colors[selColor],qty)};
 document.getElementById('buyNow').onclick=()=>{if(cur){addToCart(cur,selSize,cur.colors[selColor],qty);goCheckout()}};
 
@@ -1382,6 +1481,37 @@ async function saveQty(productId,size){
 if(window.location.hash==='#admin'){
   document.getElementById('view-admin').style.display='block';
 }
+
+// ── CUSTOM GOV DROPDOWN ──
+(function(){
+  const wrap=document.getElementById('govDrop');
+  const trigger=document.getElementById('govTrigger');
+  const panel=document.getElementById('govPanel');
+  const input=document.getElementById('coGov');
+  const labelEl=document.getElementById('govLabel');
+
+  trigger.addEventListener('click',function(e){
+    e.stopPropagation();
+    wrap.classList.toggle('open');
+  });
+
+  panel.querySelectorAll('.cd-opt').forEach(function(opt){
+    opt.addEventListener('click',function(e){
+      e.stopPropagation();
+      const val=opt.dataset.val;
+      input.value=val;
+      labelEl.textContent=val;
+      trigger.classList.remove('placeholder');
+      panel.querySelectorAll('.cd-opt').forEach(o=>o.classList.remove('selected'));
+      opt.classList.add('selected');
+      wrap.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click',function(){
+    wrap.classList.remove('open');
+  });
+})();
 
 applyLang();
 loadInventory();
