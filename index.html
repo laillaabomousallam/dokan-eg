@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>دكان | Dokan</title>
 <link rel="icon" type="image/png" href="favicon.png"/>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&family=Archivo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -19,7 +19,7 @@
   --mid:#6b6560;
   --display:'Playfair Display',serif;
   --body-ar:'IBM Plex Sans Arabic',sans-serif;
-  --body-en:'Archivo',sans-serif;
+  --body-en:'Jost',sans-serif;
 }
 html[lang=ar]{font-family:var(--body-ar)}
 html[lang=en]{font-family:var(--body-en);direction:ltr}
@@ -633,45 +633,43 @@ html[lang=en] .contact-layout > div:last-child{order:1}
   <div class="sb-items">
     <div class="sb-item" onclick="showView('home');closeSidebar()">
       <div><div class="sb-item-name t" data-ar="الرئيسية" data-en="Home"></div></div>
-      <span class="sb-item-arrow">→</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0;color:var(--muted)"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     </div>
     <div class="sb-item" onclick="showView('oversized');closeSidebar()">
       <div>
-        <div class="sb-item-name t" data-ar="اوفر سايز تيشرتس" data-en="Oversized T-Shirts"></div>
-        <div class="sb-item-sub t" data-ar="نص كم — يونيسيكس" data-en="Half Sleeve — Unisex"></div>
+        <div class="sb-item-name t" data-ar="تيشرتات واسعة" data-en="Oversized T-Shirts"></div>
+        <div class="sb-item-sub t" data-ar="كم قصير — للجنسين" data-en="Half Sleeve — Unisex"></div>
       </div>
-      <span class="sb-item-arrow">→</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0;color:var(--muted)"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z"/></svg>
     </div>
     <div class="sb-item" onclick="showView('hijabi');closeSidebar()">
       <div>
         <div class="sb-item-name t" data-ar="تيشرت الحجابي" data-en="Hijabi T-Shirt"></div>
-        <div class="sb-item-sub t" data-ar="كم طويل — محجبات" data-en="Long Sleeve — Hijabi"></div>
+        <div class="sb-item-sub t" data-ar="كم طويل — للمحجبة" data-en="Long Sleeve — Hijabi"></div>
       </div>
-      <span class="sb-item-arrow">→</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0;color:var(--muted)"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z"/></svg>
     </div>
     <div class="sb-item" onclick="showView('sizechart');closeSidebar()">
       <div><div class="sb-item-name t" data-ar="جدول المقاسات" data-en="Size Chart"></div></div>
-      <span class="sb-item-arrow">→</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0;color:var(--muted)"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
     </div>
     <div class="sb-item" onclick="openCart();closeSidebar()">
       <div>
         <div class="sb-item-name t" data-ar="العربة" data-en="Cart"></div>
         <div class="sb-item-sub" id="sbCartCount">0 items</div>
       </div>
-      <span class="sb-item-arrow">→</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0;color:var(--muted)"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.98 1.61h9.72a2 2 0 001.98-1.61L23 6H6"/></svg>
     </div>
     <div class="sb-item" onclick="showView('favorites');closeSidebar()">
       <div>
         <div class="sb-item-name t" data-ar="المفضلة" data-en="Favorites"></div>
         <div class="sb-item-sub" id="sbFavCount">0 items</div>
       </div>
-      <span class="sb-item-arrow">→</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0;color:var(--muted)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
     </div>
     <div class="sb-item" onclick="showView('contact');closeSidebar()">
-      <div>
-        <div class="sb-item-name t" data-ar="تواصل معنا" data-en="Contact Us"></div>
-      </div>
-      <span class="sb-item-arrow">→</span>
+      <div><div class="sb-item-name t" data-ar="تواصل معنا" data-en="Contact Us"></div></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0;color:var(--muted)"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
     </div>
   </div>
 </div>
@@ -682,17 +680,17 @@ html[lang=en] .contact-layout > div:last-child{order:1}
     <div class="home-panel" onclick="showView('oversized')">
       <img src="imgs/Short sleeve.png" alt="Oversized"/>
       <div class="home-panel-overlay">
-        <div class="home-panel-label t" data-ar="اوفر سايز تيشرتس" data-en="Oversized T-Shirts"></div>
-        <div class="home-panel-sub t" data-ar="نص كم — يونيسيكس" data-en="Half Sleeve — Unisex"></div>
-        <div class="home-panel-arrow t" data-ar="تسوق الآن →" data-en="Shop Now →"></div>
+        <div class="home-panel-label t" data-ar="تيشرتات واسعة" data-en="Oversized T-Shirts"></div>
+        <div class="home-panel-sub t" data-ar="كم قصير — للجنسين" data-en="Half Sleeve — Unisex"></div>
+        <div class="home-panel-arrow t" data-ar="اكتشف →" data-en="Shop Now →"></div>
       </div>
     </div>
     <div class="home-panel" onclick="showView('hijabi')">
       <img src="imgs/Long sleeve.png" alt="Hijabi"/>
       <div class="home-panel-overlay">
         <div class="home-panel-label t" data-ar="تيشرت الحجابي" data-en="Hijabi T-Shirt"></div>
-        <div class="home-panel-sub t" data-ar="كم طويل — محجبات" data-en="Long Sleeve — Hijabi"></div>
-        <div class="home-panel-arrow t" data-ar="تسوق الآن →" data-en="Shop Now →"></div>
+        <div class="home-panel-sub t" data-ar="كم طويل — للمحجبة" data-en="Long Sleeve — Hijabi"></div>
+        <div class="home-panel-arrow t" data-ar="اكتشف →" data-en="Shop Now →"></div>
       </div>
     </div>
   </div>
@@ -708,7 +706,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
   <div class="shop-wrap">
     <div class="shop-header">
       <div class="shop-header-label t" data-ar="تشوّق" data-en="Shop"></div>
-      <div class="shop-header-title t" data-ar="اوفر سايز تيشرتس" data-en="Oversized T-Shirts"></div>
+      <div class="shop-header-title t" data-ar="تيشرتات واسعة" data-en="Oversized T-Shirts"></div>
     </div>
     <div class="products-grid" id="grid-half"></div>
   </div>
@@ -758,8 +756,8 @@ html[lang=en] .contact-layout > div:last-child{order:1}
       <button class="btn-buy" id="buyNow"></button>
       <button class="btn-add" id="addCartBtn"></button>
       <div class="prod-notice t"
-           data-ar="✅ مسموح بالمعاينة عند الاستلام قبل ما تدفع"
-           data-en="✅ You can inspect the item on delivery before paying"></div>
+           data-ar="يمكن معاينة المنتج عند الاستلام قبل الدفع"
+           data-en="✅ You may inspect your order upon delivery before payment"></div>
     </div>
   </div>
 </div>
@@ -790,10 +788,10 @@ html[lang=en] .contact-layout > div:last-child{order:1}
           <tr><td>XXL</td><td>76</td><td>66</td><td>70</td></tr>
         </tbody>
       </table>
-      <p class="chart-note t" data-ar="* القياسات بالسنتيمتر — اوفر سايز فيت" data-en="* Measurements in cm — Oversized fit"></p>
+      <p class="chart-note t" data-ar="* القياسات بالسنتيمتر — قياس واسع" data-en="* Measurements in cm — Oversized fit"></p>
     </div>
     <div class="chart-section">
-      <div class="chart-section-title t" data-ar="نص الكم — يونيسيكس" data-en="Half Sleeve — Unisex"></div>
+      <div class="chart-section-title t" data-ar="كم قصير — للجنسين" data-en="Half Sleeve — Unisex"></div>
       <table class="size-table">
         <thead><tr>
           <th>Size</th>
@@ -808,7 +806,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
           <tr><td>XXL</td><td>76</td><td>66</td></tr>
         </tbody>
       </table>
-      <p class="chart-note t" data-ar="* القياسات بالسنتيمتر — اوفر سايز فيت" data-en="* Measurements in cm — Oversized fit"></p>
+      <p class="chart-note t" data-ar="* القياسات بالسنتيمتر — قياس واسع" data-en="* Measurements in cm — Oversized fit"></p>
     </div>
   </div>
 </div>
@@ -916,8 +914,8 @@ html[lang=en] .contact-layout > div:last-child{order:1}
           <div class="order-row"><span class="t" data-ar="الشحن" data-en="Shipping"></span><span class="t" data-ar="يُحسب حسب المنطقة" data-en="Calculated by area"></span></div>
           <div class="order-row total"><span class="t" data-ar="الإجمالي" data-en="Total"></span><span id="osTotal">0 EGP</span></div>
           <div class="order-notice t"
-               data-ar="✅ مسموح بالمعاينة عند الاستلام — فتح الكرتونة وشوف كل حاجة قبل ما تدفع"
-               data-en="✅ Inspect on delivery — check everything before paying"></div>
+               data-ar="يمكن معاينة المنتج عند الاستلام — افتح الطلب وتحقق من كل شيء قبل الدفع"
+               data-en="✅ Inspect on delivery — open the package and verify before payment"></div>
         </div>
       </div>
     </div>
@@ -929,7 +927,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
   <div class="success-wrap">
     <div class="success-icon">✓</div>
     <h2 class="t" data-ar="الطلب اتأكد" data-en="Order Confirmed"></h2>
-    <p class="t" data-ar="شكراً ليك! هيتواصل معاك فريقنا خلال 24 ساعة لتأكيد الطلب والشحن." data-en="Thank you! Our team will contact you within 24 hours to confirm your order and shipping."></p>
+    <p class="t" data-ar="شكراً لك! سيتواصل معك فريقنا خلال 24 ساعة لتأكيد الطلب والشحن." data-en="Thank you! Our team will contact you within 24 hours to confirm your order and shipping."></p>
     <button class="success-back t" data-ar="العودة للمتجر" data-en="Back to Shop" onclick="cart=[];updateBadge();goHome()"></button>
   </div>
 </div>
@@ -1092,19 +1090,19 @@ const COLORS=[
 const IMG={
   'Black':{'Dokan':'imgs/Black Dokan.png','80s':'imgs/Black 80s.png','Graffity':'imgs/Black Graffity.png','English':'imgs/Black English.png'},
   'White':{'Dokan':'imgs/White Dokan.png','80s':'imgs/White 80s.png','Graffity':'imgs/White Graffity.png','English':'imgs/White English.png'},
-  'Pink': {'Dokan':'imgs/Pink 80s.png',  '80s':'imgs/Pink 80s.png', 'Graffity':'imgs/Pink Graffity.png', 'English':'imgs/Pink English.png'},
+  'Pink': {'Dokan':'imgs/Pink Dokan.png',  '80s':'imgs/Pink 80s.png', 'Graffity':'imgs/Pink Graffity.png', 'English':'imgs/Pink English.png'},
 };
 function mc(d){return COLORS.map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,img:IMG[c.key][d]}))}
 
 const PRODUCTS=[
-  {id:1,cat:'half',nameAr:'تيشرت دكان',nameEn:'Dokan Tee',descAr:'اوفر سايز يونيسيكس — طباعة الدكانة الأصيلة على الظهر — قطن 100%',descEn:'Oversized unisex — iconic Dokan shop print on back — 100% cotton',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Dokan')},
-  {id:2,cat:'half',nameAr:'تيشرت 80s ريترو',nameEn:'80s Retro Tee',descAr:'اوفر سايز يونيسيكس — تصميم الثمانينات الكلاسيكي',descEn:'Oversized unisex — retro 80s collage design',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
-  {id:3,cat:'half',nameAr:'تيشرت جرافيتي',nameEn:'Graffiti Tee',descAr:'اوفر سايز يونيسيكس — طباعة جرافيتي — برق على الكم',descEn:'Oversized unisex — graffiti print — lightning bolt sleeve',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
-  {id:4,cat:'half',nameAr:'تيشرت English',nameEn:'English Tee',descAr:'اوفر سايز يونيسيكس',descEn:'Oversized unisex',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
-  {id:5,cat:'full',nameAr:'حجابي — دكان',nameEn:'Hijabi — Dokan',descAr:'بكم طويل اوفر سايز للمحجبات — طباعة الدكانة',descEn:'Oversized long sleeve — Hijabi — Dokan print',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Dokan')},
-  {id:6,cat:'full',nameAr:'حجابي — 80s ريترو',nameEn:'Hijabi — 80s Retro',descAr:'بكم طويل اوفر سايز للمحجبات — تصميم الثمانينات',descEn:'Oversized long sleeve — Hijabi — 80s design',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
-  {id:7,cat:'full',nameAr:'حجابي — جرافيتي',nameEn:'Hijabi — Graffiti',descAr:'بكم طويل اوفر سايز للمحجبات — طباعة جرافيتي',descEn:'Oversized long sleeve — Hijabi — graffiti print',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
-  {id:8,cat:'full',nameAr:'حجابي — English',nameEn:'Hijabi — English',descAr:'بكم طويل اوفر سايز للمحجبات',descEn:'Oversized long sleeve — Hijabi',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
+  {id:1,cat:'half',nameAr:'تيشرت دكان',nameEn:'Dokan Tee',descAr:'قطعة واسعة للجنسين — طباعة دكان على الظهر — قطن 100%',descEn:'Oversized unisex — iconic Dokan shop print on back — 100% cotton',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:[{nameAr:'أسود',nameEn:'Black',hex:'#0a0a0a',img:'imgs/Black Dokan.png'},{nameAr:'أبيض',nameEn:'White',hex:'#f0f0f0',img:'imgs/White Dokan.png'}]},
+  {id:2,cat:'half',nameAr:'تيشرت 80s ريترو',nameEn:'80s Retro Tee',descAr:'قطعة واسعة للجنسين — تصميم كلاسيكي من الثمانينات',descEn:'Oversized unisex — retro 80s collage design',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
+  {id:3,cat:'half',nameAr:'تيشرت جرافيتي',nameEn:'Graffiti Tee',descAr:'قطعة واسعة للجنسين — طباعة جرافيتي',descEn:'Oversized unisex — graffiti print — lightning bolt sleeve',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
+  {id:4,cat:'half',nameAr:'تيشرت English',nameEn:'English Tee',descAr:'قطعة واسعة للجنسين',descEn:'Oversized unisex',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
+  {id:5,cat:'full',nameAr:'حجابي — دكان',nameEn:'Hijabi — Dokan',descAr:'قطعة واسعة بكم طويل — طباعة دكان',descEn:'Oversized long sleeve — Hijabi — Dokan print',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Dokan')},
+  {id:6,cat:'full',nameAr:'حجابي — 80s ريترو',nameEn:'Hijabi — 80s Retro',descAr:'قطعة واسعة بكم طويل — تصميم الثمانينات',descEn:'Oversized long sleeve — Hijabi — 80s design',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
+  {id:7,cat:'full',nameAr:'حجابي — جرافيتي',nameEn:'Hijabi — Graffiti',descAr:'قطعة واسعة بكم طويل — طباعة جرافيتي',descEn:'Oversized long sleeve — Hijabi — graffiti print',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
+  {id:8,cat:'full',nameAr:'حجابي — English',nameEn:'Hijabi — English',descAr:'قطعة واسعة بكم طويل',descEn:'Oversized long sleeve — Hijabi',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
 ];
 
 let lang='ar',cart=[],cur=null,selColor=0,selSize=null,qty=1,prevView='home',toastTimer=null;
@@ -1174,11 +1172,11 @@ function closeSidebar(){document.getElementById('sidebar').classList.remove('ope
 
 function makeCard(p){
   const c=p.colors[0],name=lang==='ar'?p.nameAr:p.nameEn;
-  const cat=lang==='ar'?(p.cat==='half'?'نص كم — يونيسيكس':'كم طويل — محجبات'):(p.cat==='half'?'Half Sleeve — Unisex':'Long Sleeve — Hijabi');
+  const cat=lang==='ar'?(p.cat==='half'?'كم قصير — للجنسين':'كم طويل — للمحجبة'):(p.cat==='half'?'Half Sleeve — Unisex':'Long Sleeve — Hijabi');
   const badge='';
   const available=isProductAvailable(p);
   const isFav=favorites.includes(p.id);
-  const buyTxt=lang==='ar'?(available?'اشتري دلوقتي':'Sold Out'):(available?'Buy Now':'Sold Out');
+  const buyTxt=lang==='ar'?(available?'اشتر الآن':'Sold Out'):(available?'Buy Now':'Sold Out');
   return `<div class="card" onclick="openProduct(${p.id})">
     <div class="card-img" style="position:relative">
       <img src="${c.img}" alt="${name}" loading="lazy"/>
@@ -1237,12 +1235,12 @@ function renderProd(p){
   const col=p.colors[selColor];
   document.getElementById('prodName').textContent=lang==='ar'?p.nameAr:p.nameEn;
   document.getElementById('prodPrice').textContent=p.price+' EGP';
-  document.getElementById('prodCat').textContent=lang==='ar'?(p.cat==='half'?'نص كم — يونيسيكس':'كم طويل — محجبات'):(p.cat==='half'?'Half Sleeve — Unisex':'Long Sleeve — Hijabi');
+  document.getElementById('prodCat').textContent=lang==='ar'?(p.cat==='half'?'كم قصير — للجنسين':'كم طويل — للمحجبة'):(p.cat==='half'?'Half Sleeve — Unisex':'Long Sleeve — Hijabi');
   document.getElementById('prodDesc').textContent=lang==='ar'?p.descAr:p.descEn;
   document.getElementById('mainImg').src=col.img;
   document.getElementById('colorLabel').textContent=lang==='ar'?col.nameAr:col.nameEn;
   document.getElementById('qtyVal').value=qty;
-  document.getElementById('buyNow').textContent=lang==='ar'?'اشتري دلوقتي':'Buy Now';
+  document.getElementById('buyNow').textContent=lang==='ar'?'اشتر الآن':'Buy Now';
   document.getElementById('addCartBtn').textContent=lang==='ar'?'أضف للعربة':'Add to Cart';
   const notice=document.querySelector('#view-product .prod-notice');
   notice.textContent=lang==='ar'?notice.dataset.ar:notice.dataset.en;
@@ -1369,7 +1367,7 @@ document.getElementById('placeOrderBtn').onclick=async function(){
 function showToast(p){
   const t=document.getElementById('toast');
   document.getElementById('toastTxt').textContent=lang==='ar'?'✓ '+p.nameAr+' أُضيف':'✓ '+p.nameEn+' added';
-  document.getElementById('toastCo').textContent=lang==='ar'?'اشتري دلوقتي':'Buy Now';
+  document.getElementById('toastCo').textContent=lang==='ar'?'اشتر الآن':'Buy Now';
   document.getElementById('toastView').textContent=lang==='ar'?'العربة':'Cart';
   t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3500);
 }
@@ -1413,7 +1411,7 @@ async function submitContact(){
   btn.disabled=false;
   btn.textContent=lang==='ar'?'إرسال':'Send Message';
   success.style.display='block';
-  success.textContent=lang==='ar'?'✓ تم إرسال رسالتك، هنرد عليك قريباً':'✓ Message sent! We\'ll get back to you soon.';
+  success.textContent=lang==='ar'?'✓ تم إرسال رسالتك، سنرد عليك قريباً':'✓ Message sent! We\'ll get back to you soon.';
   document.getElementById('ctName').value='';
   document.getElementById('ctEmail').value='';
   document.getElementById('ctPhone').value='';
