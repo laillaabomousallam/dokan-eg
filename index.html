@@ -441,7 +441,17 @@ html[lang=en] .c-drawer.open{transform:translateX(0)}
 .page-logo{display:flex;justify-content:center;padding:2.5rem 0 0;margin-bottom:0}
 .page-logo img{height:60px;width:auto}
 
-/* ─── INVENTORY & SOLD OUT ─── */
+.card-sold-overlay{
+  position:absolute;inset:0;
+  background:rgba(250,250,248,.75);
+  display:flex;align-items:center;justify-content:center;
+  z-index:1;
+}
+.card-sold-overlay span{
+  background:var(--ink);color:#fff;
+  font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  padding:6px 16px;
+}
 .sz.sold-out{opacity:.3;cursor:not-allowed;text-decoration:line-through}
 .sold-out-banner{
   background:var(--dust);color:var(--mid);
@@ -1176,11 +1186,13 @@ function makeCard(p){
   const badge='';
   const available=isProductAvailable(p);
   const isFav=favorites.includes(p.id);
-  const buyTxt=lang==='ar'?(available?'اشتر الآن':'Sold Out'):(available?'Buy Now':'Sold Out');
+  const buyTxt=lang==='ar'?(available?'اشتر الآن':'نفذت الكمية'):(available?'Buy Now':'Sold Out');
+  const soldOverlay=!available?`<div class="card-sold-overlay"><span>${lang==='ar'?'نفذت الكمية':'Sold Out'}</span></div>`:'';
   return `<div class="card" onclick="openProduct(${p.id})">
     <div class="card-img" style="position:relative">
       <img src="${c.img}" alt="${name}" loading="lazy"/>
       ${badge?`<span class="card-badge">${badge}</span>`:''}
+      ${soldOverlay}
       <button class="fav-btn ${isFav?'active':''}" onclick="event.stopPropagation();toggleFav(${p.id})"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
     </div>
     <div class="card-name">${name}</div>
