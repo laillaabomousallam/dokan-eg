@@ -245,7 +245,9 @@ html[lang=en] .sidebar.open{transform:translateX(0)}
 .prod-desc{font-size:.84rem;color:var(--mid);line-height:1.85;margin-bottom:1.75rem;border-top:1px solid var(--line);padding-top:1.25rem}
 .opt-label{font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.55rem}
 .color-row{display:flex;gap:8px;margin-bottom:.3rem}
-.color-sw{width:24px;height:24px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:border-color .15s}
+.color-sw{width:24px;height:24px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:border-color .15s;position:relative}
+.color-sw.color-sold-out{opacity:.35;cursor:not-allowed}
+.color-sw.color-sold-out::after{content:'';position:absolute;inset:2px;border-radius:50%;background:linear-gradient(135deg,transparent 42%,rgba(0,0,0,.5) 42%,rgba(0,0,0,.5) 58%,transparent 58%)}
 .color-sw.active{border-color:var(--ink)!important}
 .color-name-label{font-size:.75rem;color:var(--mid);margin-bottom:1.4rem;min-height:16px}
 .size-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem}
@@ -1149,17 +1151,29 @@ async function loadInventory(){
   const {data,error}=await sb.from('inventory').select('*');
   if(error){console.error('inventory error',error);return}
   inventory={};
-  data.forEach(row=>{inventory[`${row.product_id}_${row.size}`]=row.quantity});
+  data.forEach(row=>{
+    const color=row.color||'Black';
+    inventory[`${row.product_id}_${color}_${row.size}`]=row.quantity;
+  });
   renderGrids();
   if(cur)renderProd(cur);
 }
 
-function getQty(productId,size){
-  const k=`${productId}_${size}`;
+function getColorKey(color){
+  return color.key || color.nameEn;
+}
+
+function getQty(productId,colorKey,size){
+  const k=`${productId}_${colorKey}_${size}`;
   return inventory[k]!==undefined ? inventory[k] : 99;
 }
-function isAvailable(productId,size){return getQty(productId,size)>0}
-function isProductAvailable(p){return p.sizes.some(s=>isAvailable(p.id,s))}
+function isAvailable(productId,size,colorKey='Black'){return getQty(productId,colorKey,size)>0}
+function isProductAvailable(p){
+  return p.colors.some(c=>p.sizes.some(s=>isAvailable(p.id,s,getColorKey(c))));
+}
+function isColorAvailable(p,colorKey){
+  return p.sizes.some(s=>isAvailable(p.id,s,colorKey));
+}
 
 function applyLang(){
   document.documentElement.lang=lang;
@@ -1257,9 +1271,17 @@ function renderProd(p){
   const notice=document.querySelector('#view-product .prod-notice');
   notice.textContent=lang==='ar'?notice.dataset.ar:notice.dataset.en;
   document.getElementById('thumbsRow').innerHTML=p.colors.map((c,i)=>`<img class="thumb ${i===selColor?'active':''}" src="${c.img}" onclick="switchColor(${i})" alt=""/>`).join('');
-  document.getElementById('colorOpts').innerHTML=p.colors.map((c,i)=>`<div class="color-sw ${i===selColor?'active':''}" style="background:${c.hex};${c.hex==='#f0f0f0'?'border-color:#bbb!important':''}" onclick="switchColor(${i})"></div>`).join('');
+  document.getElementById('colorOpts').innerHTML=p.colors.map((c,i)=>{
+    const key=getColorKey(c);
+    const colorAvail=isColorAvailable(p,key);
+    return `<div class="color-sw ${i===selColor?'active':''} ${!colorAvail?'color-sold-out':''}" 
+      style="background:${c.hex};${c.hex==='#f0f0f0'?'border-color:#bbb!important':''}" 
+      onclick="${colorAvail?`switchColor(${i})`:''}" 
+      title="${!colorAvail?(lang==='ar'?'نفذت الكمية':'Sold Out'):''}"></div>`;
+  }).join('');
+  const curColorKey=getColorKey(cur.colors[selColor]);
   document.getElementById('sizeOpts').innerHTML=p.sizes.map(s=>{
-    const avail=isAvailable(p.id,s);
+    const avail=isAvailable(p.id,s,curColorKey);
     return `<button class="sz ${s===selSize?'active':''} ${!avail?'sold-out':''}" onclick="${avail?`selectSize('${s}')`:''}"">${s}</button>`;
   }).join('');
 }
@@ -1279,9 +1301,10 @@ document.getElementById('addCartBtn').onclick=()=>{if(cur)addToCart(cur,selSize,
 document.getElementById('buyNow').onclick=()=>{if(cur){addToCart(cur,selSize,cur.colors[selColor],qty);goCheckout()}};
 
 function addToCart(p,size,color,amount){
+  const colorKey=getColorKey(color);
   const ex=cart.find(i=>i.id===p.id&&i.size===size&&i.colorHex===color.hex);
   if(ex)ex.qty+=amount;
-  else cart.push({id:p.id,nameAr:p.nameAr,nameEn:p.nameEn,price:p.price,size,colorHex:color.hex,colorAr:color.nameAr,colorEn:color.nameEn,img:color.img,qty:amount});
+  else cart.push({id:p.id,nameAr:p.nameAr,nameEn:p.nameEn,price:p.price,size,colorHex:color.hex,colorAr:color.nameAr,colorEn:color.nameEn,colorKey,img:color.img,qty:amount});
   updateBadge();showToast(p);
 }
 function quickAdd(id){const p=PRODUCTS.find(x=>x.id===id);addToCart(p,p.sizes[1]||p.sizes[0],p.colors[0],1)}
@@ -1367,10 +1390,12 @@ document.getElementById('placeOrderBtn').onclick=async function(){
 
   // تقليل المخزون بعد الطلب
   for(const item of cart){
-    const key=`${item.id}_${item.size}`;
+    const colorKey=item.colorEn||item.colorKey||'Black';
+    const key=`${item.id}_${colorKey}_${item.size}`;
     const newQty=Math.max(0,(inventory[key]||0)-item.qty);
     inventory[key]=newQty;
-    await sb.from('inventory').update({quantity:newQty}).eq('product_id',item.id).eq('size',item.size);
+    await sb.from('inventory').update({quantity:newQty})
+      .eq('product_id',item.id).eq('color',colorKey).eq('size',item.size);
   }
 
   showView('success');
@@ -1447,41 +1472,56 @@ function adminLogin(){
 async function renderAdmin(){
   const content=document.getElementById('adminContent');
   content.innerHTML='<p style="color:var(--muted);font-size:.82rem">Loading...</p>';
-  const {data}=await sb.from('inventory').select('*').order('product_id').order('size');
+  const {data}=await sb.from('inventory').select('*').order('product_id').order('size').order('color');
   if(!data){content.innerHTML='<p>Error loading inventory</p>';return}
 
+  const colorNames={'Black':'أسود','White':'أبيض','Pink':'وردي'};
+  const sizeOrder=['S','M','L','XL','XXL'];
   let html='';
+
   PRODUCTS.forEach(p=>{
-    const rows=data.filter(r=>r.product_id===p.id);
+    const productRows=data.filter(r=>r.product_id===p.id);
+    if(!productRows.length) return;
+
+    const sizes=[...new Set(productRows.map(r=>r.size))].sort((a,b)=>sizeOrder.indexOf(a)-sizeOrder.indexOf(b));
+
     html+=`<div class="admin-section">
-      <div class="admin-section-title">${p.nameEn} (ID: ${p.id})</div>
+      <div class="admin-section-title">${p.nameAr} — ${p.nameEn}</div>
       <table class="admin-table">
-        <thead><tr><th>Size</th><th>Quantity</th><th>Action</th></tr></thead>
-        <tbody>${rows.map(r=>`
-          <tr>
-            <td><strong>${r.size}</strong></td>
-            <td><input class="admin-qty" id="qty_${r.product_id}_${r.size}" type="number" value="${r.quantity}" min="0"/></td>
-            <td>
-              <button class="admin-save" onclick="saveQty(${r.product_id},'${r.size}')">Save</button>
-              <div class="admin-status" id="status_${r.product_id}_${r.size}"></div>
-            </td>
-          </tr>`).join('')}
-        </tbody>
-      </table>
-    </div>`;
+        <thead><tr><th>المقاس</th><th>اللون</th><th>الكمية</th><th></th></tr></thead>
+        <tbody>`;
+
+    sizes.forEach(size=>{
+      const sizeRows=productRows.filter(r=>r.size===size);
+      sizeRows.forEach((r,i)=>{
+        const colorLabel=colorNames[r.color]||r.color;
+        html+=`<tr ${i===0?'style="border-top:2px solid var(--line)"':''}>
+          <td>${i===0?`<strong>${size}</strong>`:''}</td>
+          <td style="color:var(--mid);font-size:.78rem">${colorLabel} / ${r.color}</td>
+          <td><input class="admin-qty" id="qty_${r.product_id}_${r.color}_${r.size}" type="number" value="${r.quantity}" min="0"/></td>
+          <td>
+            <button class="admin-save" onclick="saveQty(${r.product_id},'${r.color}','${r.size}')">حفظ</button>
+            <span class="admin-status" id="status_${r.product_id}_${r.color}_${r.size}"></span>
+          </td>
+        </tr>`;
+      });
+    });
+
+    html+=`</tbody></table></div>`;
   });
   content.innerHTML=html;
 }
 
-async function saveQty(productId,size){
-  const input=document.getElementById(`qty_${productId}_${size}`);
-  const status=document.getElementById(`status_${productId}_${size}`);
+async function saveQty(productId,color,size){
+  const input=document.getElementById(`qty_${productId}_${color}_${size}`);
+  const status=document.getElementById(`status_${productId}_${color}_${size}`);
   const newQty=parseInt(input.value)||0;
-  const {error}=await sb.from('inventory').update({quantity:newQty}).eq('product_id',productId).eq('size',size);
+  const {error}=await sb.from('inventory').update({quantity:newQty})
+    .eq('product_id',productId).eq('color',color).eq('size',size);
   if(error){status.textContent='Error!';status.style.color='red'}
   else{
-    inventory[`${productId}_${size}`]=newQty;
-    status.textContent='Saved ✓';status.style.color='green';
+    inventory[`${productId}_${color}_${size}`]=newQty;
+    status.textContent='✓';status.style.color='green';
     setTimeout(()=>status.textContent='',2000);
     renderGrids();
   }
