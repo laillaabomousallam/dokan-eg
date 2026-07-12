@@ -527,7 +527,14 @@ html[lang=en] .c-drawer.open{transform:translateX(0)}
 .fav-btn.active svg path{fill:#0a0a0a}
 .favs-page{min-height:calc(100vh - 52px);padding:2.5rem}
 .favs-empty{text-align:center;color:var(--muted);font-size:.85rem;margin-top:4rem}
-/* ─── CONTACT ─── */
+.btype-btn{
+  background:#f2f2f2;border:none;border-radius:20px;
+  padding:6px 14px;font-size:.72rem;font-weight:500;
+  cursor:pointer;font-family:inherit;color:var(--ink);
+  transition:all .15s;
+}
+.btype-btn:hover{background:#e8e8e8}
+.btype-btn.active{background:#0a0a0a;color:#fff}
 .contact-layout{display:grid;gap:3rem;max-width:1100px;padding:3rem 2.5rem;min-height:calc(100vh - 52px)}
 html[lang=ar] .contact-layout{grid-template-columns:1fr 6fr;direction:ltr;align-items:start}
 html[lang=en] .contact-layout{grid-template-columns:6fr 1fr;direction:ltr;align-items:start}
@@ -632,7 +639,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
   .contact-layout > div:last-child{order:1}
   .contact-row{grid-template-columns:1fr}
   /* sidebar */
-  .sidebar{width:100%}
+  .sidebar{width:min(320px,85vw)}
 }
 @media(max-width:480px){
   .products-grid{grid-template-columns:repeat(2,1fr);gap:.4rem;padding:0 .5rem 1.5rem}
@@ -723,7 +730,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0;color:var(--muted)"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
     </div>
     <div class="sb-item" onclick="showView('track');closeSidebar()">
-      <div><div class="sb-item-name t" data-ar="تتبع طلبك" data-en="Track Order"></div></div>
+      <div><div class="sb-item-name t" data-ar="الطلبات" data-en="Orders"></div></div>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0;color:var(--muted)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </div>
   </div>
@@ -936,7 +943,14 @@ html[lang=en] .contact-layout > div:last-child{order:1}
           <div class="field"><label class="t" data-ar="اسم الشارع" data-en="Street Name"></label><input type="text" id="coStreet"/></div>
         </div>
         <div class="field-row full">
-          <div class="field"><label class="t" data-ar="شركة / عمارة (اختياري)" data-en="Company / Building Name (optional)"></label><input type="text" id="coBuilding"/></div>
+          <div class="field">
+            <label class="t" data-ar="نوع المبنى (اختياري)" data-en="Building Type (optional)"></label>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem">
+              <button type="button" class="btype-btn" onclick="setBuildingType(this,'عمارة','Building')" data-ar="عمارة" data-en="Building"></button>
+              <button type="button" class="btype-btn" onclick="setBuildingType(this,'شركة','Company')" data-ar="شركة" data-en="Company"></button>
+            </div>
+            <input type="text" id="coBuilding" class="t" data-ar-placeholder="اسم المبنى / الشركة" data-en-placeholder="Building / Company name"/>
+          </div>
         </div>
         <div class="field-row">
           <div class="field"><label class="t" data-ar="رقم المبنى" data-en="Building No."></label><input type="text" id="coBuildNum"/></div>
@@ -1025,9 +1039,13 @@ html[lang=en] .contact-layout > div:last-child{order:1}
   </div>
   <!-- Dashboard -->
   <div class="admin-wrap" id="adminDash" style="display:none">
-    <div class="admin-title">Dokan — Inventory Management</div>
-    <div class="admin-sub">Changes save directly to database</div>
+    <div class="admin-title">Dokan — Admin</div>
+    <div style="display:flex;gap:0;margin-bottom:2rem;border-bottom:2px solid var(--line)">
+      <button onclick="adminTab('inventory')" id="tabInventory" style="background:none;border:none;padding:.75rem 1.25rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;cursor:pointer;border-bottom:2px solid #0a0a0a;margin-bottom:-2px;font-family:inherit">INVENTORY</button>
+      <button onclick="adminTab('orders')" id="tabOrders" style="background:none;border:none;padding:.75rem 1.25rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:inherit;color:var(--muted)">ORDERS</button>
+    </div>
     <div id="adminContent"></div>
+    <div id="adminOrders" style="display:none"></div>
   </div>
 </div>
 
@@ -1119,19 +1137,14 @@ html[lang=en] .contact-layout > div:last-child{order:1}
 
 <!-- TRACK ORDER -->
 <div class="view" id="view-track">
-  <div style="direction:ltr"><button class="back-btn" style="position:static;display:inline-flex;margin:1.5rem 0 0 2.5rem" onclick="navGoBack()">
-    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-  </button></div>
-  <div style="max-width:480px;margin:0 auto;padding:2rem 1.5rem">
-    <div style="font-family:var(--display);font-size:1.8rem;font-weight:400;margin-bottom:.4rem" class="t" data-ar="تتبع طلبك" data-en="Track Your Order"></div>
-    <p style="font-size:.82rem;color:var(--mid);margin-bottom:2rem;line-height:1.6" class="t" data-ar="أدخل رقم الأوردر أو رقم موبايلك" data-en="Enter your order number or phone number"></p>
-
+  <div style="max-width:480px;margin:0 auto;padding:3rem 1.5rem 2rem">
+    <div style="font-family:var(--display);font-size:1.8rem;font-weight:400;margin-bottom:.4rem" class="t" data-ar="الطلبات" data-en="Orders"></div>
+    <p style="font-size:.82rem;color:var(--mid);margin-bottom:2rem;line-height:1.6" class="t" data-ar="أدخل رقم الطلب أو رقم موبايلك" data-en="Enter your order number or phone number"></p>
     <div style="display:flex;gap:.5rem;margin-bottom:1.5rem">
       <input type="text" id="trackInput" style="flex:1;background:#f2f2f2;border:none;border-radius:20px;padding:12px 18px;font-size:.85rem;font-family:inherit;outline:none"
-        placeholder="DKN-2025-XXXXX"/>
+        placeholder="DKN-2026-XXXXX" onkeydown="if(event.key==='Enter')trackOrder()"/>
       <button onclick="trackOrder()" style="background:#0a0a0a;color:#fff;border:none;border-radius:20px;padding:12px 20px;font-size:.72rem;font-weight:700;letter-spacing:.1em;cursor:pointer;white-space:nowrap" class="t" data-ar="بحث" data-en="Search"></button>
     </div>
-
     <div id="trackResult"></div>
   </div>
 </div>
@@ -1170,6 +1183,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
   <div class="qs-section-label t" data-ar="المقاس" data-en="Size"></div>
   <div class="qs-sizes" id="qsSizes"></div>
   <button class="qs-btn" id="qsBuyBtn"></button>
+  <button class="qs-btn-sec" id="qsAddBtn"></button>
 </div>
 
 <!-- TOAST -->
@@ -1240,15 +1254,18 @@ let favorites=JSON.parse(localStorage.getItem('dokan_favs')||'[]');
 // ── جلب المخزون من Supabase ──
 async function loadInventory(){
   const {data,error}=await sb.from('inventory').select('*');
-  if(error){console.error('inventory error',error);return}
+  if(error){
+    console.error('inventory error:', error.message||error.code||JSON.stringify(error));
+    // شغل الموقع حتى لو في error في الـ inventory
+    renderGrids();
+    return;
+  }
   inventory={};
   data.forEach(row=>{
     const color=row.color||'Black';
     const key=`${row.product_id}_${color}_${row.size}`;
     inventory[key]=row.quantity;
-    if(row.product_id===1) console.log('KEY:',key,'QTY:',row.quantity);
   });
-  console.log('inventory keys for id=1:', Object.keys(inventory).filter(k=>k.startsWith('1_')));
   renderGrids();
   if(cur)renderProd(cur);
 }
@@ -1273,6 +1290,7 @@ function applyLang(){
   document.documentElement.lang=lang;
   document.documentElement.dir=lang==='ar'?'rtl':'ltr';
   document.querySelectorAll('.t[data-ar]').forEach(el=>el.textContent=lang==='ar'?el.dataset.ar:el.dataset.en);
+  document.querySelectorAll('.btype-btn').forEach(el=>el.textContent=lang==='ar'?el.dataset.ar:el.dataset.en);
   document.getElementById('langBtn').textContent=lang==='ar'?'EN':'عر';
   ['logoImgAr','shopLogoAr1','shopLogoAr2','shopLogoAr4','shopLogoAr5','shopLogoAr6','shopLogoAr7'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=lang==='ar'?'block':'none'});
   ['logoImgEn','shopLogoEn1','shopLogoEn2','shopLogoEn4','shopLogoEn5','shopLogoEn6','shopLogoEn7'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=lang==='en'?'block':'none'});
@@ -1417,6 +1435,9 @@ let qsProduct=null,qsSelColor=0,qsSelSize=null;
 function openQS(id,mode){
   qsProduct=PRODUCTS.find(x=>x.id===id);
   qsSelColor=0;qsSelSize=null;
+  // أظهر/أخفي زرار Add to Cart حسب الـ mode
+  const addBtn=document.getElementById('qsAddBtn');
+  if(addBtn) addBtn.style.display=mode==='add'?'block':'none';
   renderQS(mode);
   document.getElementById('qsOverlay').classList.add('open');
   document.getElementById('qsModal').classList.add('open');
@@ -1447,10 +1468,16 @@ function renderQS(mode){
       onclick="${avail?`qsSelectSize('${mode}','${s}')`:''}">${s}</button>`;
   }).join('');
   const buyBtn=document.getElementById('qsBuyBtn');
+  const addBtn=document.getElementById('qsAddBtn');
   buyBtn.textContent=lang==='ar'?'اشتر الآن':'Buy Now';
+  addBtn.textContent=lang==='ar'?'أضف للعربة':'Add to Cart';
   buyBtn.onclick=()=>{
     if(!qsSelSize){alert(lang==='ar'?'اختر المقاس':'Please select a size');return}
     addToCart(p,qsSelSize,p.colors[qsSelColor],1);closeQS();goCheckout();
+  };
+  addBtn.onclick=()=>{
+    if(!qsSelSize){alert(lang==='ar'?'اختر المقاس':'Please select a size');return}
+    addToCart(p,qsSelSize,p.colors[qsSelColor],1);closeQS();
   };
 }
 function qsSwitchColor(mode,i){qsSelColor=i;qsSelSize=null;renderQS(mode)}
@@ -1613,6 +1640,19 @@ async function submitContact(){
 }
 
 document.getElementById('ctSubmit').addEventListener('click',submitContact);
+function setBuildingType(btn,ar,en){
+  document.querySelectorAll('.btype-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const input=document.getElementById('coBuilding');
+  const type=lang==='ar'?ar:en;
+  // لو الخانة فاضية أو فيها نوع قديم بس، حطي النوع الجديد
+  const current=input.value.trim();
+  const types=['عمارة','فيلا','شركة','مستشفى','مدرسة','فندق','Building','Villa','Company','Hospital','School','Hotel'];
+  if(!current||types.some(t=>current===t)){
+    input.value=type;
+  }
+}
+
 // ── TRACK ORDER ──
 async function trackOrder(){
   const val=document.getElementById('trackInput').value.trim();
@@ -1622,13 +1662,13 @@ async function trackOrder(){
   // ابحث بـ order_number أو phone
   let data=null,error=null;
   const res1=await sb.from('orders')
-    .select('order_number,first_name,last_name,phone,status,total,items,created_at')
+    .select('order_number,first_name,last_name,phone,status,total,items,created_at,governorate,district,street,building_name,building_number,floor_number,apartment_number')
     .eq('order_number',val)
     .limit(5);
   if(res1.data&&res1.data.length){data=res1.data}
   else{
     const res2=await sb.from('orders')
-      .select('order_number,first_name,last_name,phone,status,total,items,created_at')
+      .select('order_number,first_name,last_name,phone,status,total,items,created_at,governorate,district,street,building_name,building_number,floor_number,apartment_number')
       .eq('phone',val)
       .order('created_at',{ascending:false})
       .limit(5);
@@ -1649,17 +1689,46 @@ async function trackOrder(){
     const st=statusMap[o.status]||{ar:o.status,en:o.status,color:'#999'};
     const stLabel=lang==='ar'?st.ar:st.en;
     const date=new Date(o.created_at).toLocaleDateString(lang==='ar'?'ar-EG':'en-GB');
-    const items=(o.items||[]).map(i=>`<div style="font-size:.75rem;color:var(--mid);margin-top:3px">${i.name} · ${i.size} · ${i.color} × ${i.qty}</div>`).join('');
-    return `<div style="background:#f2f2f2;border-radius:16px;padding:1.25rem;margin-bottom:.75rem">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
-        <div style="font-size:.7rem;font-weight:700;letter-spacing:.08em;color:var(--muted)">${o.order_number||'—'}</div>
-        <div style="background:${st.color};color:#fff;font-size:.6rem;font-weight:700;letter-spacing:.1em;padding:4px 12px;border-radius:20px">${stLabel}</div>
+    let itemsArr=[];
+    try{itemsArr=Array.isArray(o.items)?o.items:(typeof o.items==='string'?JSON.parse(o.items):[]);}catch(e){}
+    const items=itemsArr.map(i=>`
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line)">
+        <div>
+          <div style="font-size:.82rem;font-weight:500">${i.name||''}</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:2px">${i.size||''} · ${i.color||''}</div>
+        </div>
+        <div style="font-size:.82rem;font-weight:600;flex-shrink:0;margin-inline-start:1rem">×${i.qty||1} · ${((i.price||0)*(i.qty||1))} EGP</div>
+      </div>`).join('');
+    return `<div style="background:var(--white);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:1rem">
+      <div style="background:#0a0a0a;color:#fff;padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:.58rem;letter-spacing:.12em;opacity:.6;margin-bottom:3px">${lang==='ar'?'رقم الطلب':'ORDER NUMBER'}</div>
+          <div style="font-size:.88rem;font-weight:700;letter-spacing:.06em">${o.order_number||'—'}</div>
+        </div>
       </div>
-      <div style="font-size:.85rem;font-weight:500;margin-bottom:.4rem">${o.first_name} ${o.last_name}</div>
-      ${items}
-      <div style="display:flex;justify-content:space-between;margin-top:.75rem;padding-top:.75rem;border-top:1px solid #ddd">
-        <span style="font-size:.75rem;color:var(--muted)">${date}</span>
-        <span style="font-size:.82rem;font-weight:600">${o.total} EGP</span>
+      <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--line);display:flex;justify-content:space-between">
+        <div>
+          <div style="font-size:.58rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">${lang==='ar'?'الاسم':'Name'}</div>
+          <div style="font-size:.85rem;font-weight:500">${o.first_name} ${o.last_name}</div>
+        </div>
+        <div style="text-align:end">
+          <div style="font-size:.58rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">${lang==='ar'?'التاريخ':'Date'}</div>
+          <div style="font-size:.82rem">${date}</div>
+        </div>
+      </div>
+      <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--line)">
+        <div style="font-size:.58rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem">${lang==='ar'?'عنوان التوصيل':'Delivery Address'}</div>
+        <div style="font-size:.82rem;line-height:1.7;color:var(--ink)">
+          ${[o.governorate,o.district,o.street,o.building_name,[o.building_number?'Building '+o.building_number:'',o.floor_number?'Floor '+o.floor_number:'',o.apartment_number?'Apt '+o.apartment_number:''].filter(Boolean).join(' · ')].filter(Boolean).join(' — ')}
+        </div>
+      </div>
+      <div style="padding:.5rem 1.25rem">
+        <div style="font-size:.58rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin:.6rem 0">${lang==='ar'?'المنتجات':'Items'}</div>
+        ${items}
+      </div>
+      <div style="padding:1rem 1.25rem;background:#f2f2f2;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:.8rem;color:var(--muted)">${lang==='ar'?'الإجمالي':'Total'}</span>
+        <span style="font-size:1rem;font-weight:700">${o.total} EGP</span>
       </div>
     </div>`;
   }).join('');
@@ -1676,6 +1745,61 @@ function adminLogin(){
   } else {
     document.getElementById('adminErr').style.display='block';
   }
+}
+
+function adminTab(tab){
+  document.getElementById('adminContent').style.display=tab==='inventory'?'block':'none';
+  document.getElementById('adminOrders').style.display=tab==='orders'?'block':'none';
+  document.getElementById('tabInventory').style.borderBottomColor=tab==='inventory'?'#0a0a0a':'transparent';
+  document.getElementById('tabInventory').style.color=tab==='inventory'?'#0a0a0a':'var(--muted)';
+  document.getElementById('tabOrders').style.borderBottomColor=tab==='orders'?'#0a0a0a':'transparent';
+  document.getElementById('tabOrders').style.color=tab==='orders'?'#0a0a0a':'var(--muted)';
+  if(tab==='orders') renderOrders();
+}
+
+async function renderOrders(){
+  const el=document.getElementById('adminOrders');
+  el.innerHTML='<p style="color:var(--muted);font-size:.82rem">Loading...</p>';
+  const {data,error}=await sb.from('orders').select('*').order('created_at',{ascending:false}).limit(50);
+  if(error||!data){el.innerHTML='<p>Error loading orders</p>';return}
+
+  const statusOptions=['new','confirmed','shipped','delivered','cancelled'];
+  const statusLabels={'new':'Under Review','confirmed':'Confirmed','shipped':'Shipped','delivered':'Delivered','cancelled':'Cancelled'};
+  const statusColors={'new':'#e8a000','confirmed':'#0a7c0a','shipped':'#0057b7','delivered':'#0a7c0a','cancelled':'#c00'};
+
+  el.innerHTML=`<div style="margin-bottom:1rem;font-size:.72rem;color:var(--muted)">${data.length} orders</div>`+
+  data.map(o=>{
+    let itemsArr=[];
+    try{itemsArr=Array.isArray(o.items)?o.items:(typeof o.items==='string'?JSON.parse(o.items):[]);}catch(e){}
+    const items=itemsArr.map(i=>`<span style="font-size:.72rem;color:var(--mid)">${i.name||''} (${i.size||''} · ${i.color||''}) ×${i.qty||1}</span>`).join('<br>');
+    const date=new Date(o.created_at).toLocaleDateString('en-GB');
+    return `<div style="border:1px solid var(--line);border-radius:12px;padding:1rem;margin-bottom:.75rem">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem">
+        <div>
+          <div style="font-size:.72rem;font-weight:700;letter-spacing:.08em;color:var(--muted)">${o.order_number||'—'}</div>
+          <div style="font-size:.88rem;font-weight:600;margin-top:2px">${o.first_name||''} ${o.last_name||''}</div>
+          <div style="font-size:.72rem;color:var(--muted)">${o.phone||''} · ${date}</div>
+        </div>
+        <div style="font-size:.95rem;font-weight:700">${o.total||0} EGP</div>
+      </div>
+      <div style="margin-bottom:.75rem">${items}</div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <select id="ostatus_${o.id}" style="background:#f2f2f2;border:none;border-radius:20px;padding:7px 14px;font-size:.72rem;font-family:inherit;cursor:pointer">
+          ${statusOptions.map(s=>`<option value="${s}" ${o.status===s?'selected':''}>${statusLabels[s]}</option>`).join('')}
+        </select>
+        <button onclick="saveOrderStatus(${o.id})" style="background:#0a0a0a;color:#fff;border:none;border-radius:20px;padding:7px 16px;font-size:.7rem;font-weight:700;cursor:pointer;font-family:inherit">Save</button>
+        <span id="ostatus_msg_${o.id}" style="font-size:.7rem;color:green"></span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function saveOrderStatus(orderId){
+  const sel=document.getElementById(`ostatus_${orderId}`);
+  const msg=document.getElementById(`ostatus_msg_${orderId}`);
+  const {error}=await sb.from('orders').update({status:sel.value}).eq('id',orderId);
+  if(error){msg.textContent='Error!';msg.style.color='red'}
+  else{msg.textContent='✓ Saved';msg.style.color='green';setTimeout(()=>msg.textContent='',2000)}
 }
 
 async function renderAdmin(){
