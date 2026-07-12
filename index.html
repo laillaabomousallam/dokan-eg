@@ -309,7 +309,9 @@ html[lang=en] .prod-notice{border-right:none;border-left:none}
 .field-group{margin-bottom:1rem}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
 .field-row.full{grid-template-columns:1fr}
-.field label{display:block;font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+.field input.error,.field select.error,.field textarea.error{background:#fff0f0;outline:1.5px solid #c00}
+.field-error{font-size:.65rem;color:#c00;margin-top:.3rem;display:none}
+.field-error.show{display:block}
 .field input,.field select,.field textarea{
   width:100%;background:#f2f2f2;border:none;border-radius:20px;
   padding:12px 18px;font-size:.85rem;font-family:inherit;
@@ -725,13 +727,13 @@ html[lang=en] .contact-layout > div:last-child{order:1}
       </div>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0;color:var(--muted)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
     </div>
-    <div class="sb-item" onclick="showView('contact');closeSidebar()">
-      <div><div class="sb-item-name t" data-ar="تواصل معنا" data-en="Contact Us"></div></div>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0;color:var(--muted)"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-    </div>
     <div class="sb-item" onclick="showView('track');closeSidebar()">
       <div><div class="sb-item-name t" data-ar="الطلبات" data-en="Orders"></div></div>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0;color:var(--muted)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </div>
+    <div class="sb-item" onclick="showView('contact');closeSidebar()">
+      <div><div class="sb-item-name t" data-ar="تواصل معنا" data-en="Contact Us"></div></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0;color:var(--muted)"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
     </div>
   </div>
 </div>
@@ -886,11 +888,11 @@ html[lang=en] .contact-layout > div:last-child{order:1}
         <h2 class="co-page-title t" data-ar="إتمام الشراء" data-en="Checkout"></h2>
         <div class="co-section-label t" data-ar="بيانات التوصيل" data-en="Delivery Details"></div>
         <div class="field-row">
-          <div class="field"><label class="t" data-ar="الاسم الأول" data-en="First Name"></label><input type="text" id="coFirst"/></div>
-          <div class="field"><label class="t" data-ar="الاسم الأخير" data-en="Last Name"></label><input type="text" id="coLast"/></div>
+          <div class="field"><label class="t" data-ar="الاسم الأول" data-en="First Name"></label><input type="text" id="coFirst"/><span class="field-error t" id="errFirst" data-ar="الاسم الأول مطلوب" data-en="First name is required"></span></div>
+          <div class="field"><label class="t" data-ar="الاسم الأخير" data-en="Last Name"></label><input type="text" id="coLast"/><span class="field-error t" id="errLast" data-ar="الاسم الأخير مطلوب" data-en="Last name is required"></span></div>
         </div>
         <div class="field-row full">
-          <div class="field"><label class="t" data-ar="رقم الموبايل" data-en="Phone Number"></label><input type="tel" id="coPhone" placeholder="+20 1XX XXX XXXX"/></div>
+          <div class="field"><label class="t" data-ar="رقم الموبايل" data-en="Phone Number"></label><input type="tel" id="coPhone" placeholder="+20 1XX XXX XXXX"/><span class="field-error t" id="errPhone" data-ar="رقم الموبايل مطلوب" data-en="Phone number is required"></span></div>
         </div>
         <div class="field-row full">
           <div class="field"><label class="t" data-ar="الإيميل (اختياري)" data-en="Email (optional)"></label><input type="email" id="coEmail" placeholder="example@email.com"/></div>
@@ -934,13 +936,14 @@ html[lang=en] .contact-layout > div:last-child{order:1}
               </div>
             </div>
             <input type="hidden" id="coGov"/>
+            <span class="field-error t" id="errGov" data-ar="المحافظة مطلوبة" data-en="Governorate is required"></span>
           </div>
         </div>
         <div class="field-row full">
-          <div class="field"><label class="t" data-ar="المنطقة / الحي" data-en="District / Area"></label><input type="text" id="coDistrict"/></div>
+          <div class="field"><label class="t" data-ar="المنطقة / الحي" data-en="District / Area"></label><input type="text" id="coDistrict"/><span class="field-error t" id="errDistrict" data-ar="المنطقة مطلوبة" data-en="District is required"></span></div>
         </div>
         <div class="field-row full">
-          <div class="field"><label class="t" data-ar="اسم الشارع" data-en="Street Name"></label><input type="text" id="coStreet"/></div>
+          <div class="field"><label class="t" data-ar="اسم الشارع" data-en="Street Name"></label><input type="text" id="coStreet"/><span class="field-error t" id="errStreet" data-ar="اسم الشارع مطلوب" data-en="Street name is required"></span></div>
         </div>
         <div class="field-row full">
           <div class="field">
@@ -955,7 +958,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
         <!-- حقول العمارة -->
         <div id="buildingFields">
           <div class="field-row">
-            <div class="field"><label id="lblBuildNum" class="t" data-ar="رقم المبنى" data-en="Building No."></label><input type="text" id="coBuildNum"/></div>
+            <div class="field"><label id="lblBuildNum" class="t" data-ar="رقم المبنى" data-en="Building No."></label><input type="text" id="coBuildNum"/><span class="field-error t" id="errBuildNum" data-ar="رقم المبنى مطلوب" data-en="Building number is required"></span></div>
             <div class="field"><label id="lblFloor" class="t" data-ar="رقم الدور" data-en="Floor No."></label><input type="text" id="coFloor"/></div>
           </div>
           <div class="field-row" id="aptRow">
@@ -1539,9 +1542,39 @@ document.getElementById('placeOrderBtn').onclick=async function(){
   const notes=(document.getElementById('coNotes').value.trim()+(recipient?` — المستلم: ${recipient}`:'')).trim();
   const payment=document.querySelector('input[name="payment"]:checked').value;
 
-  if(!first||!phone||!gov||!district||!street||!buildNum){
-    alert(lang==='ar'?'من فضلك اكمل البيانات المطلوبة':'Please fill in all required fields');return;
+  // Validation
+  const fields=[
+    {id:'coFirst',err:'errFirst'},
+    {id:'coLast',err:'errLast'},
+    {id:'coPhone',err:'errPhone'},
+    {id:'coDistrict',err:'errDistrict'},
+    {id:'coStreet',err:'errStreet'},
+    {id:'coBuildNum',err:'errBuildNum'},
+  ];
+  let valid=true;
+  // clear previous errors
+  document.querySelectorAll('.field input,.field select,.field textarea').forEach(el=>el.classList.remove('error'));
+  document.querySelectorAll('.field-error').forEach(el=>el.classList.remove('show'));
+
+  fields.forEach(f=>{
+    const el=document.getElementById(f.id);
+    const err=document.getElementById(f.err);
+    if(el&&!el.value.trim()){
+      el.classList.add('error');
+      if(err) err.classList.add('show');
+      valid=false;
+      if(valid===false&&el) el.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+  });
+  // check governorate
+  if(!gov){
+    const trigger=document.getElementById('govTrigger');
+    if(trigger) trigger.classList.add('error');
+    const errGov=document.getElementById('errGov');
+    if(errGov) errGov.classList.add('show');
+    valid=false;
   }
+  if(!valid) return;
   if(!cart.length){alert(lang==='ar'?'العربة فاضية':'Your cart is empty');return}
 
   const total=cart.reduce((a,i)=>a+i.price*i.qty,0);
@@ -1627,11 +1660,9 @@ async function submitContact(){
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer sb_publishable_VJHuyzV-YTy_L3ia1ss8QA_gn4J6qlu'},
       body:JSON.stringify({
-        first_name:name,last_name:'',phone,
-        governorate:'رسالة تواصل',district:'',street:'',
-        building_name:'',building_number:'',floor_number:'',
-        apartment_number:'',landmark:email,notes:message,
-        payment_method:'contact',items:[],total:0
+        table:'messages',
+        type:'INSERT',
+        record:{name,email,phone,message}
       })
     });
   }catch(e){console.error(e)}
@@ -1923,6 +1954,16 @@ if(window.location.hash==='#admin'){
     wrap.classList.remove('open');
   });
 })();
+
+// مسح الـ error لما المستخدم يبدأ يكتب
+['coFirst','coLast','coPhone','coDistrict','coStreet','coBuildNum'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el) el.addEventListener('input',()=>{
+    el.classList.remove('error');
+    const err=document.getElementById('err'+id.replace('co',''));
+    if(err) err.classList.remove('show');
+  });
+});
 
 applyLang();
 loadInventory();
