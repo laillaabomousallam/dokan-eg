@@ -1510,19 +1510,10 @@ function renderQS(mode){
 }
 function qsSwitchColor(mode,i){qsSelColor=i;qsSelSize=null;renderQS(mode)}
 function qsSelectSize(mode,s){qsSelSize=s;renderQS(mode)}
-function saveCart(){
-  try{localStorage.setItem('dokan_cart',JSON.stringify(cart));}catch(e){}
-}
-function loadCart(){
-  try{
-    const saved=localStorage.getItem('dokan_cart');
-    if(saved) cart=JSON.parse(saved);
-  }catch(e){cart=[];}
-}
+function updateBadge(){
   const n=cart.reduce((a,i)=>a+i.qty,0);
   const b=document.getElementById('cartBadge');
   b.textContent=n;b.classList.toggle('show',n>0);
-  localStorage.setItem('dokan_cart',JSON.stringify(cart));
 }
 function renderCart(){
   const body=document.getElementById('cBody'),foot=document.getElementById('cFoot');
