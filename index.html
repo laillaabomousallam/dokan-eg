@@ -309,11 +309,12 @@ html[lang=en] .prod-notice{border-right:none;border-left:none}
 .field-group{margin-bottom:1rem}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
 .field-row.full{grid-template-columns:1fr}
-.field input.error,.field select.error,.field textarea.error{background:#fff0f0;outline:1.5px solid #c00}
+.field input.error,.field select.error,.field textarea.error{outline:2px solid #c00}
+.contact-field input.error,.contact-field textarea.error{outline:2px solid #c00}
 .field-error{font-size:.65rem;color:#c00;margin-top:.3rem;display:none}
 .field-error.show{display:block}
 .field input,.field select,.field textarea{
-  width:100%;background:#f2f2f2;border:none;border-radius:20px;
+  width:100%;background:#e8e8e8;border:none;border-radius:20px;
   padding:12px 18px;font-size:.85rem;font-family:inherit;
   color:var(--ink);outline:none;transition:background .2s;
 }
@@ -456,7 +457,7 @@ html[lang=en] .c-drawer.open{transform:translateX(0)}
 /* ─── CUSTOM DROPDOWN ─── */
 .cd-wrap{position:relative;width:100%}
 .cd-trigger{
-  width:100%;background:#f2f2f2;border:none;border-radius:20px;
+  width:100%;background:#e8e8e8;border:none;border-radius:20px;
   padding:12px 18px;font-size:.85rem;font-family:inherit;
   color:var(--ink);outline:none;cursor:pointer;
   display:flex;justify-content:space-between;align-items:center;
@@ -530,7 +531,7 @@ html[lang=en] .c-drawer.open{transform:translateX(0)}
 .favs-page{min-height:calc(100vh - 52px);padding:2.5rem}
 .favs-empty{text-align:center;color:var(--muted);font-size:.85rem;margin-top:4rem}
 .btype-btn{
-  background:#f2f2f2;border:none;border-radius:20px;
+  background:#e8e8e8;border:none;border-radius:20px;
   padding:6px 14px;font-size:.72rem;font-weight:500;
   cursor:pointer;font-family:inherit;color:var(--ink);
   transition:all .15s;
@@ -551,12 +552,14 @@ html[lang=en] .contact-layout > div:last-child{order:1}
 .contact-field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.75rem}
 .contact-field label{font-size:.65rem;font-weight:500;color:var(--ink)}
 .contact-field input,.contact-field textarea{
-  width:100%;background:#f2f2f2;border:none;border-radius:20px;
+  width:100%;background:#e8e8e8;border:none;border-radius:20px;
   padding:12px 18px;font-size:.85rem;font-family:inherit;
   color:var(--ink);outline:none;transition:background .2s;
 }
 .contact-field input::placeholder,.contact-field textarea::placeholder{color:#aaa}
-.contact-field input:focus,.contact-field textarea:focus{background:#eaeaea}
+.contact-field input.error,.contact-field textarea.error{outline:2px solid #c00}
+.contact-field .field-error{font-size:.65rem;color:#c00;margin-top:.3rem;display:none}
+.contact-field .field-error.show{display:block}
 .contact-field textarea{border-radius:16px;height:130px;resize:none}
 .contact-submit{
   background:#0a0a0a;color:#fff;border:none;
@@ -892,10 +895,10 @@ html[lang=en] .contact-layout > div:last-child{order:1}
           <div class="field"><label class="t" data-ar="الاسم الأخير" data-en="Last Name"></label><input type="text" id="coLast"/><span class="field-error t" id="errLast" data-ar="الاسم الأخير مطلوب" data-en="Last name is required"></span></div>
         </div>
         <div class="field-row full">
-          <div class="field"><label class="t" data-ar="رقم الموبايل" data-en="Phone Number"></label><input type="tel" id="coPhone" placeholder="+20 1XX XXX XXXX"/><span class="field-error t" id="errPhone" data-ar="رقم الموبايل مطلوب" data-en="Phone number is required"></span></div>
+          <div class="field"><label class="t" data-ar="رقم الموبايل" data-en="Phone Number"></label><input type="text" id="coPhone" placeholder="+20 1XX XXX XXXX"/><span class="field-error t" id="errPhone" data-ar="رقم الموبايل مطلوب" data-en="Phone number is required"></span></div>
         </div>
         <div class="field-row full">
-          <div class="field"><label class="t" data-ar="الإيميل (اختياري)" data-en="Email (optional)"></label><input type="email" id="coEmail" placeholder="example@email.com"/></div>
+          <div class="field"><label class="t" data-ar="الإيميل *" data-en="Email *"></label><input type="text" id="coEmail" placeholder="example@email.com"/><span class="field-error t" id="errEmail" data-ar="الإيميل مطلوب" data-en="Email is required"></span></div>
         </div>
         <div class="field-row full">
           <div class="field">
@@ -959,10 +962,10 @@ html[lang=en] .contact-layout > div:last-child{order:1}
         <div id="buildingFields">
           <div class="field-row">
             <div class="field"><label id="lblBuildNum" class="t" data-ar="رقم المبنى" data-en="Building No."></label><input type="text" id="coBuildNum"/><span class="field-error t" id="errBuildNum" data-ar="رقم المبنى مطلوب" data-en="Building number is required"></span></div>
-            <div class="field"><label id="lblFloor" class="t" data-ar="رقم الدور" data-en="Floor No."></label><input type="text" id="coFloor"/></div>
+            <div class="field"><label id="lblFloor" class="t" data-ar="رقم الدور" data-en="Floor No."></label><input type="text" id="coFloor"/><span class="field-error t" id="errFloor" data-ar="رقم الدور مطلوب" data-en="Floor number is required"></span></div>
           </div>
           <div class="field-row" id="aptRow">
-            <div class="field"><label class="t" data-ar="رقم الشقة" data-en="Apartment No."></label><input type="text" id="coApt"/></div>
+            <div class="field"><label class="t" data-ar="رقم الشقة" data-en="Apartment No."></label><input type="text" id="coApt"/><span class="field-error t" id="errApt" data-ar="رقم الشقة مطلوب" data-en="Apartment number is required"></span></div>
             <div class="field"><label class="t" data-ar="علامة مميزة (اختياري)" data-en="Landmark (optional)"></label><input type="text" id="coLandmark"/></div>
           </div>
           <div class="field-row full" id="companyRow" style="display:none">
@@ -1118,25 +1121,30 @@ html[lang=en] .contact-layout > div:last-child{order:1}
         <div class="contact-field">
           <label class="t" data-ar="الاسم" data-en="Name"></label>
           <input type="text" id="ctName" class="t" data-ar-placeholder="الاسم" data-en-placeholder="Name"/>
+          <span class="field-error t" id="errCtName" data-ar="من فضلك أدخل اسمك" data-en="Please enter your name"></span>
         </div>
         <div class="contact-field">
           <label class="t" data-ar="الإيميل *" data-en="Email *"></label>
-          <input type="email" id="ctEmail" class="t" data-ar-placeholder="الإيميل" data-en-placeholder="Email"/>
+          <input type="text" id="ctEmail" class="t" data-ar-placeholder="الإيميل" data-en-placeholder="Email"/>
+          <span class="field-error t" id="errCtEmail" data-ar="من فضلك أدخل إيميلك" data-en="Please enter your email"></span>
         </div>
       </div>
       <div class="contact-row">
         <div class="contact-field">
           <label class="t" data-ar="رقم الموبايل *" data-en="Phone Number *"></label>
-          <input type="tel" id="ctPhone" class="t" data-ar-placeholder="رقم الموبايل" data-en-placeholder="Phone Number"/>
+          <input type="text" id="ctPhone" class="t" data-ar-placeholder="رقم الموبايل" data-en-placeholder="Phone Number"/>
+          <span class="field-error t" id="errCtPhone" data-ar="من فضلك أدخل رقم موبايلك" data-en="Please enter your phone number"></span>
         </div>
         <div class="contact-field">
-          <label class="t" data-ar="رقم الأوردر" data-en="Order Number"></label>
-          <input type="text" id="ctOrder" class="t" data-ar-placeholder="رقم الأوردر" data-en-placeholder="Order Number"/>
+          <label class="t" data-ar="رقم الطلب *" data-en="Order Number *"></label>
+          <input type="text" id="ctOrder" class="t" data-ar-placeholder="رقم الطلب" data-en-placeholder="Order Number"/>
+          <span class="field-error t" id="errCtOrder" data-ar="من فضلك أدخل رقم الطلب" data-en="Please enter your order number"></span>
         </div>
       </div>
       <div class="contact-field">
         <label class="t" data-ar="رسالتك" data-en="Your message"></label>
         <textarea id="ctMessage" class="t" data-ar-placeholder="رسالتك" data-en-placeholder="Your message"></textarea>
+        <span class="field-error t" id="errCtMessage" data-ar="من فضلك اكتب رسالتك" data-en="Please enter your message"></span>
       </div>
       <button class="contact-submit" id="ctSubmit"></button>
       <p class="contact-success" id="ctSuccess" style="display:none"></p>
@@ -1150,7 +1158,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
     <div style="font-family:var(--display);font-size:1.8rem;font-weight:400;margin-bottom:.4rem" class="t" data-ar="الطلبات" data-en="Orders"></div>
     <p style="font-size:.82rem;color:var(--mid);margin-bottom:2rem;line-height:1.6" class="t" data-ar="أدخل رقم الطلب أو رقم موبايلك" data-en="Enter your order number or phone number"></p>
     <div style="display:flex;gap:.5rem;margin-bottom:1.5rem">
-      <input type="text" id="trackInput" style="flex:1;background:#f2f2f2;border:none;border-radius:20px;padding:12px 18px;font-size:.85rem;font-family:inherit;outline:none"
+      <input type="text" id="trackInput" style="flex:1;background:#e8e8e8;border:none;border-radius:20px;padding:12px 18px;font-size:.85rem;font-family:inherit;outline:none"
         placeholder="DKN-2026-XXXXX" onkeydown="if(event.key==='Enter')trackOrder()"/>
       <button onclick="trackOrder()" style="background:#0a0a0a;color:#fff;border:none;border-radius:20px;padding:12px 20px;font-size:.72rem;font-weight:700;letter-spacing:.1em;cursor:pointer;white-space:nowrap" class="t" data-ar="بحث" data-en="Search"></button>
     </div>
@@ -1191,6 +1199,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
   <div class="qs-color-label" id="qsColorLabel"></div>
   <div class="qs-section-label t" data-ar="المقاس" data-en="Size"></div>
   <div class="qs-sizes" id="qsSizes"></div>
+  <div id="qsSizeErr" style="display:none;font-size:.7rem;color:#c00;text-align:center;margin-bottom:.5rem"></div>
   <button class="qs-btn" id="qsBuyBtn"></button>
   <button class="qs-btn-sec" id="qsAddBtn"></button>
 </div>
@@ -1481,11 +1490,19 @@ function renderQS(mode){
   buyBtn.textContent=lang==='ar'?'اشتر الآن':'Buy Now';
   addBtn.textContent=lang==='ar'?'أضف للعربة':'Add to Cart';
   buyBtn.onclick=()=>{
-    if(!qsSelSize){alert(lang==='ar'?'اختر المقاس':'Please select a size');return}
+    if(!qsSelSize){
+      const err=document.getElementById('qsSizeErr');
+      if(err){err.textContent=lang==='ar'?'من فضلك اختر المقاس':'Please select a size';err.style.display='block';setTimeout(()=>err.style.display='none',2500);}
+      return;
+    }
     addToCart(p,qsSelSize,p.colors[qsSelColor],1);closeQS();goCheckout();
   };
   addBtn.onclick=()=>{
-    if(!qsSelSize){alert(lang==='ar'?'اختر المقاس':'Please select a size');return}
+    if(!qsSelSize){
+      const err=document.getElementById('qsSizeErr');
+      if(err){err.textContent=lang==='ar'?'من فضلك اختر المقاس':'Please select a size';err.style.display='block';setTimeout(()=>err.style.display='none',2500);}
+      return;
+    }
     addToCart(p,qsSelSize,p.colors[qsSelColor],1);closeQS();
   };
 }
@@ -1547,9 +1564,12 @@ document.getElementById('placeOrderBtn').onclick=async function(){
     {id:'coFirst',err:'errFirst'},
     {id:'coLast',err:'errLast'},
     {id:'coPhone',err:'errPhone'},
+    {id:'coEmail',err:'errEmail'},
     {id:'coDistrict',err:'errDistrict'},
     {id:'coStreet',err:'errStreet'},
     {id:'coBuildNum',err:'errBuildNum'},
+    {id:'coFloor',err:'errFloor'},
+    {id:'coApt',err:'errApt'},
   ];
   let valid=true;
   // clear previous errors
@@ -1575,7 +1595,7 @@ document.getElementById('placeOrderBtn').onclick=async function(){
     valid=false;
   }
   if(!valid) return;
-  if(!cart.length){alert(lang==='ar'?'العربة فاضية':'Your cart is empty');return}
+  if(!cart.length){showToast({nameAr:lang==='ar'?'العربة فاضية':'Cart is empty',nameEn:'Cart is empty'});return}
 
   const total=cart.reduce((a,i)=>a+i.price*i.qty,0);
   const itemsData=cart.map(i=>({name:i.nameAr+' / '+i.nameEn,size:i.size,color:i.colorAr+' / '+i.colorEn,qty:i.qty,price:i.price}));
@@ -1595,7 +1615,12 @@ document.getElementById('placeOrderBtn').onclick=async function(){
 
   if(error){
     console.error(error);
-    alert(lang==='ar'?'حصل خطأ، حاولي تاني':'Something went wrong, please try again');
+    const errMsg=lang==='ar'?'حصل خطأ، حاولي تاني':'Something went wrong, please try again';
+    const errEl=document.createElement('p');
+    errEl.style.cssText='color:#c00;font-size:.75rem;margin-top:.5rem;text-align:center';
+    errEl.textContent=errMsg;
+    btn.parentNode.insertBefore(errEl,btn.nextSibling);
+    setTimeout(()=>errEl.remove(),3000);
     btn.disabled=false;btn.textContent=lang==='ar'?'تأكيد الطلب':'Place Order';return;
   }
 
@@ -1643,10 +1668,31 @@ async function submitContact(){
   const btn=document.getElementById('ctSubmit');
   const success=document.getElementById('ctSuccess');
 
-  if(!name||!message){
-    alert(lang==='ar'?'من فضلك اكتب اسمك ورسالتك':'Please fill in your name and message');
-    return;
-  }
+  // clear errors
+  ['ctName','ctEmail','ctPhone','ctMessage'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.remove('error');
+  });
+  document.querySelectorAll('#view-contact .field-error').forEach(e=>e.classList.remove('show'));
+
+  let valid=true;
+  const requiredFields=[
+    {id:'ctName',err:'errCtName'},
+    {id:'ctEmail',err:'errCtEmail'},
+    {id:'ctPhone',err:'errCtPhone'},
+    {id:'ctOrder',err:'errCtOrder'},
+    {id:'ctMessage',err:'errCtMessage'},
+  ];
+  requiredFields.forEach(f=>{
+    const el=document.getElementById(f.id);
+    const errEl=document.getElementById(f.err);
+    if(el&&!el.value.trim()){
+      el.classList.add('error');
+      if(errEl) errEl.classList.add('show');
+      valid=false;
+    }
+  });
+  if(!valid) return;
 
   btn.disabled=true;
   btn.textContent=lang==='ar'?'جاري الإرسال...':'Sending...';
@@ -1843,7 +1889,7 @@ async function renderOrders(){
       </div>
       <div style="margin-bottom:.75rem">${items}</div>
       <div style="display:flex;align-items:center;gap:.5rem">
-        <select id="ostatus_${o.id}" style="background:#f2f2f2;border:none;border-radius:20px;padding:7px 14px;font-size:.72rem;font-family:inherit;cursor:pointer">
+        <select id="ostatus_${o.id}" style="background:#e8e8e8;border:none;border-radius:20px;padding:7px 14px;font-size:.72rem;font-family:inherit;cursor:pointer">
           ${statusOptions.map(s=>`<option value="${s}" ${o.status===s?'selected':''}>${statusLabels[s]}</option>`).join('')}
         </select>
         <button onclick="saveOrderStatus(${o.id})" style="background:#0a0a0a;color:#fff;border:none;border-radius:20px;padding:7px 16px;font-size:.7rem;font-weight:700;cursor:pointer;font-family:inherit">Save</button>
