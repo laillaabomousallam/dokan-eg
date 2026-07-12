@@ -149,6 +149,7 @@ html[lang=ar] .lang-btn{border-right:none;border-left:1px solid var(--line)}
 .sidebar{
   position:fixed;top:0;bottom:0;width:300px;background:var(--paper);z-index:301;
   display:flex;flex-direction:column;padding-top:52px;transition:transform .3s cubic-bezier(.25,.46,.45,.94);
+  height:100vh;overflow:hidden;
 }
 html[lang=ar] .sidebar{right:0;left:auto;transform:translateX(100%);border-inline-start:1px solid var(--line)}
 html[lang=ar] .sidebar.open{transform:translateX(0)}
@@ -157,7 +158,7 @@ html[lang=en] .sidebar.open{transform:translateX(0)}
 .sb-head{padding:1.5rem 1.75rem;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
 .sb-head-label{font-size:.52rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
 .sb-close{background:none;border:none;font-size:.85rem;color:var(--muted);padding:4px;cursor:pointer;letter-spacing:.05em}
-.sb-items{flex:1;overflow-y:auto}
+.sb-items{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .sb-item{
   display:flex;align-items:center;justify-content:space-between;
   padding:1.1rem 1.75rem;cursor:pointer;border-bottom:1px solid var(--line);
@@ -617,7 +618,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
   .nav-pages-wrap{display:none}
   /* home */
   .home-hero{grid-template-columns:1fr;height:auto;max-height:none;gap:.5rem;padding:0 .75rem;margin:1rem auto}
-  .home-panel{height:75vw;min-height:260px;max-height:400px}
+  .home-panel{height:90vw;min-height:300px;max-height:500px}
   .home-panel-overlay{padding:1rem}
   .home-panel-label{font-size:1.2rem}
   .home-panel-arrow{display:none}
@@ -1321,8 +1322,18 @@ function toggleLang(){lang=lang==='ar'?'en':'ar';applyLang()}
 
 function goHome(){showView('home')}
 function setActiveNav(b){document.querySelectorAll('.nav-page-btn').forEach(x=>x.classList.remove('active-nav'));if(b)b.classList.add('active-nav')}
-function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('sbOverlay').classList.add('open');document.getElementById('sbCartCount').textContent=cart.reduce((a,i)=>a+i.qty,0)+' items'}
-function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sbOverlay').classList.remove('open')}
+function openSidebar(){
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sbOverlay').classList.add('open');
+  document.getElementById('sbCartCount').textContent=cart.reduce((a,i)=>a+i.qty,0)+' items';
+  document.getElementById('sbFavCount').textContent=favorites.length+' items';
+  document.body.style.overflow='hidden';
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sbOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
 
 function makeCard(p){
   const c=p.colors[0],name=lang==='ar'?p.nameAr:p.nameEn;
@@ -1529,8 +1540,8 @@ function renderCart(){
   document.getElementById('cTotal').textContent=cart.reduce((a,i)=>a+i.price*i.qty,0)+' EGP';
 }
 function removeItem(i){cart.splice(i,1);saveCart();updateBadge();renderCart()}
-function openCart(){renderCart();document.getElementById('cDrawer').classList.add('open');document.getElementById('cOverlay').classList.add('open')}
-function closeCart(){document.getElementById('cDrawer').classList.remove('open');document.getElementById('cOverlay').classList.remove('open')}
+function openCart(){renderCart();document.getElementById('cDrawer').classList.add('open');document.getElementById('cOverlay').classList.add('open');document.body.style.overflow='hidden'}
+function closeCart(){document.getElementById('cDrawer').classList.remove('open');document.getElementById('cOverlay').classList.remove('open');document.body.style.overflow=''}
 document.getElementById('cartBtn').onclick=openCart;
 
 function goCheckout(){closeCart();renderCheckout();showView('checkout')}
