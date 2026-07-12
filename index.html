@@ -1019,7 +1019,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
     "></div>
     <p style="font-size:.7rem;color:var(--muted);margin-top:-.25rem" class="t" data-ar="احتفظ برقم الطلب لتتبع شحنتك" data-en="Save this number to track your order"></p>
     <p class="t" data-ar="شكراً لك! سيتواصل معك فريقنا خلال 24 ساعة لتأكيد الطلب والشحن." data-en="Thank you! Our team will contact you within 24 hours to confirm your order and shipping."></p>
-    <button class="success-back t" data-ar="العودة للمتجر" data-en="Back to Shop" onclick="cart=[];updateBadge();goHome()"></button>
+    <button class="success-back t" data-ar="العودة للمتجر" data-en="Back to Shop" onclick="cart=[];updateBadge();localStorage.removeItem('dokan_cart');goHome()"></button>
   </div>
 </div>
 
@@ -1240,7 +1240,7 @@ const PRODUCTS=[
   {id:8,cat:'full',nameAr:'حجابي — English',nameEn:'Hijabi — English',descAr:'قطعة واسعة بكم طويل',descEn:'Oversized long sleeve — Hijabi',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
 ];
 
-let lang='en',cart=[],cur=null,selColor=0,selSize=null,qty=1,prevView='home',toastTimer=null;
+let lang='en',cart=JSON.parse(localStorage.getItem('dokan_cart')||'[]'),cur=null,selColor=0,selSize=null,qty=1,prevView='home',toastTimer=null;
 let viewHistory=[];  // تاريخ الصفحات
 
 function showView(n){
@@ -1439,12 +1439,14 @@ document.getElementById('qtyPlus').onclick=()=>{if(qty<10){qty++;document.getEle
 document.getElementById('addCartBtn').onclick=()=>{if(cur)addToCart(cur,selSize,cur.colors[selColor],qty)};
 document.getElementById('buyNow').onclick=()=>{if(cur){addToCart(cur,selSize,cur.colors[selColor],qty);goCheckout()}};
 
+function saveCart(){localStorage.setItem('dokan_cart',JSON.stringify(cart))}
+
 function addToCart(p,size,color,amount){
   const colorKey=getColorKey(color);
   const ex=cart.find(i=>i.id===p.id&&i.size===size&&i.colorHex===color.hex);
   if(ex)ex.qty+=amount;
   else cart.push({id:p.id,nameAr:p.nameAr,nameEn:p.nameEn,price:p.price,size,colorHex:color.hex,colorAr:color.nameAr,colorEn:color.nameEn,colorKey,img:color.img,qty:amount});
-  updateBadge();showToast(p);
+  saveCart();updateBadge();showToast(p);
 }
 function quickAdd(id){openQS(id,'add')}
 
@@ -1508,7 +1510,20 @@ function renderQS(mode){
 }
 function qsSwitchColor(mode,i){qsSelColor=i;qsSelSize=null;renderQS(mode)}
 function qsSelectSize(mode,s){qsSelSize=s;renderQS(mode)}
-function updateBadge(){const n=cart.reduce((a,i)=>a+i.qty,0);const b=document.getElementById('cartBadge');b.textContent=n;b.classList.toggle('show',n>0)}
+function saveCart(){
+  try{localStorage.setItem('dokan_cart',JSON.stringify(cart));}catch(e){}
+}
+function loadCart(){
+  try{
+    const saved=localStorage.getItem('dokan_cart');
+    if(saved) cart=JSON.parse(saved);
+  }catch(e){cart=[];}
+}
+  const n=cart.reduce((a,i)=>a+i.qty,0);
+  const b=document.getElementById('cartBadge');
+  b.textContent=n;b.classList.toggle('show',n>0);
+  localStorage.setItem('dokan_cart',JSON.stringify(cart));
+}
 function renderCart(){
   const body=document.getElementById('cBody'),foot=document.getElementById('cFoot');
   if(!cart.length){body.innerHTML='<p class="c-empty">'+(lang==='ar'?'العربة فاضية':'Your cart is empty')+'</p>';foot.style.display='none';return}
@@ -1522,7 +1537,7 @@ function renderCart(){
     <div class="ci-price">${item.price*item.qty} EGP</div></div>`).join('');
   document.getElementById('cTotal').textContent=cart.reduce((a,i)=>a+i.price*i.qty,0)+' EGP';
 }
-function removeItem(i){cart.splice(i,1);updateBadge();renderCart()}
+function removeItem(i){cart.splice(i,1);saveCart();updateBadge();renderCart()}
 function openCart(){renderCart();document.getElementById('cDrawer').classList.add('open');document.getElementById('cOverlay').classList.add('open')}
 function closeCart(){document.getElementById('cDrawer').classList.remove('open');document.getElementById('cOverlay').classList.remove('open')}
 document.getElementById('cartBtn').onclick=openCart;
@@ -1643,6 +1658,8 @@ document.getElementById('placeOrderBtn').onclick=async function(){
   }
 
   showView('success');
+  cart=[];saveCart();
+  cart=[];updateBadge();localStorage.removeItem('dokan_cart');
   const onEl=document.getElementById('orderNumberDisplay');
   if(onEl){
     const label=lang==='ar'?'رقم الطلب: ':'Order #: ';
