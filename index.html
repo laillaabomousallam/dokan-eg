@@ -654,6 +654,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
   .home-panel-label{font-size:1rem}
 }
 </style>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -1054,10 +1055,12 @@ html[lang=en] .contact-layout > div:last-child{order:1}
   <div class="admin-wrap" id="adminDash" style="display:none">
     <div class="admin-title">Dokan — Admin</div>
     <div style="display:flex;gap:0;margin-bottom:2rem;border-bottom:2px solid var(--line)">
-      <button onclick="adminTab('inventory')" id="tabInventory" style="background:none;border:none;padding:.75rem 1.25rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;cursor:pointer;border-bottom:2px solid #0a0a0a;margin-bottom:-2px;font-family:inherit">INVENTORY</button>
+      <button onclick="adminTab('dashboard')" id="tabDashboard" style="background:none;border:none;padding:.75rem 1.25rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;cursor:pointer;border-bottom:2px solid #0a0a0a;margin-bottom:-2px;font-family:inherit">DASHBOARD</button>
+      <button onclick="adminTab('inventory')" id="tabInventory" style="background:none;border:none;padding:.75rem 1.25rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:inherit;color:var(--muted)">INVENTORY</button>
       <button onclick="adminTab('orders')" id="tabOrders" style="background:none;border:none;padding:.75rem 1.25rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:inherit;color:var(--muted)">ORDERS</button>
     </div>
-    <div id="adminContent"></div>
+    <div id="adminDashboard"></div>
+    <div id="adminContent" style="display:none"></div>
     <div id="adminOrders" style="display:none"></div>
   </div>
 </div>
@@ -1864,20 +1867,77 @@ function adminLogin(){
   if(pass===ADMIN_PASSWORD){
     document.getElementById('adminLogin').style.display='none';
     document.getElementById('adminDash').style.display='block';
-    renderAdmin();
+    renderDashboard();
   } else {
     document.getElementById('adminErr').style.display='block';
   }
 }
 
 function adminTab(tab){
+  document.getElementById('adminDashboard').style.display=tab==='dashboard'?'block':'none';
   document.getElementById('adminContent').style.display=tab==='inventory'?'block':'none';
   document.getElementById('adminOrders').style.display=tab==='orders'?'block':'none';
-  document.getElementById('tabInventory').style.borderBottomColor=tab==='inventory'?'#0a0a0a':'transparent';
-  document.getElementById('tabInventory').style.color=tab==='inventory'?'#0a0a0a':'var(--muted)';
-  document.getElementById('tabOrders').style.borderBottomColor=tab==='orders'?'#0a0a0a':'transparent';
-  document.getElementById('tabOrders').style.color=tab==='orders'?'#0a0a0a':'var(--muted)';
+  ['tabDashboard','tabInventory','tabOrders'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.style.borderBottomColor='transparent';el.style.color='var(--muted)';}
+  });
+  const active=document.getElementById('tab'+tab.charAt(0).toUpperCase()+tab.slice(1));
+  if(active){active.style.borderBottomColor='#0a0a0a';active.style.color='#0a0a0a';}
   if(tab==='orders') renderOrders();
+  if(tab==='dashboard') renderDashboard();
+}
+
+async function renderDashboard(){
+  const el=document.getElementById('adminDashboard');
+  el.innerHTML='<p style="color:var(--muted);font-size:.82rem">Loading...</p>';
+
+  // جيب الأوردرات
+  const {data:orders}=await sb.from('orders').select('total,status,created_at,items');
+  // جيب الرسائل
+  const {data:messages}=await sb.from('messages').select('id,created_at');
+
+  if(!orders){el.innerHTML='<p>Error</p>';return}
+
+  const totalOrders=orders.length;
+  const totalRevenue=orders.reduce((a,o)=>a+(o.total||0),0);
+  const statusCount={};
+  orders.forEach(o=>{statusCount[o.status]=(statusCount[o.status]||0)+1});
+
+  // أكتر منتج مطلوب
+  const productCount={};
+  orders.forEach(o=>{
+    (o.items||[]).forEach(i=>{
+      const name=i.name||'';
+      productCount[name]=(productCount[name]||0)+(i.qty||1);
+    });
+  });
+  const topProduct=Object.entries(productCount).sort((a,b)=>b[1]-a[1])[0];
+
+  // أوردرات النهارده
+  const today=new Date().toDateString();
+  const todayOrders=orders.filter(o=>new Date(o.created_at).toDateString()===today).length;
+
+  el.innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;margin-bottom:2rem">
+      ${stat('Total Orders',totalOrders,'🛍️')}
+      ${stat('Today',todayOrders,'📅')}
+      ${stat('Revenue',totalRevenue+' EGP','💰')}
+      ${stat('Messages',messages?.length||0,'💬')}
+      ${stat('Confirmed',statusCount['confirmed']||0,'✅')}
+      ${stat('Shipped',statusCount['shipped']||0,'🚚')}
+      ${stat('Pending',statusCount['new']||0,'⏳')}
+      ${stat('Top Product',topProduct?topProduct[0].split('/')[0].trim()+' ('+topProduct[1]+')':'—','🏆')}
+    </div>
+    <div style="font-size:.6rem;color:var(--muted);text-align:center;margin-top:1rem">Last updated: ${new Date().toLocaleTimeString()}</div>
+  `;
+}
+
+function stat(label,value,icon){
+  return `<div style="background:#f2f2f2;border-radius:12px;padding:1.1rem;text-align:center">
+    <div style="font-size:1.4rem;margin-bottom:.3rem">${icon}</div>
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:.2rem">${value}</div>
+    <div style="font-size:.62rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase">${label}</div>
+  </div>`;
 }
 
 async function renderOrders(){
