@@ -310,6 +310,10 @@ html[lang=en] .prod-notice{border-right:none;border-left:none}
 .field-group{margin-bottom:1rem}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
 .field-row.full{grid-template-columns:1fr}
+.field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.75rem}
+.field label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.field-error{font-size:.65rem;color:#c00;margin-top:.3rem;display:none}
+.field-error.show{display:block}
 .field input.error,.field select.error,.field textarea.error{outline:2px solid #c00}
 .contact-field input.error,.contact-field textarea.error{outline:2px solid #c00}
 .field-error{font-size:.65rem;color:#c00;margin-top:.3rem;display:none}
@@ -952,12 +956,12 @@ html[lang=en] .contact-layout > div:last-child{order:1}
         </div>
         <div class="field-row full">
           <div class="field">
-            <label class="t" data-ar="نوع المبنى " data-en="Building Type "></label><input type="text" id="coBuildingType"/><span class="field-error t" id="errBuildingType" data-ar="نوع المبنى مطلوب" data-en="Building type is required"></span></div>
+            <label class="t" data-ar="نوع المبنى (اختياري)" data-en="Building Type (optional)"></label>
             <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem">
               <button type="button" class="btype-btn" onclick="setBuildingType(this,'عمارة','Building')" data-ar="عمارة" data-en="Building"></button>
               <button type="button" class="btype-btn" onclick="setBuildingType(this,'شركة','Company')" data-ar="شركة" data-en="Company"></button>
             </div>
-            <input type="text" id="coBuilding" class="t" data-ar-placeholder=" المبنى / الشركة" data-en-placeholder="Building / Company name"/>
+            <input type="text" id="coBuilding" class="t" data-ar-placeholder="اسم المبنى / الشركة" data-en-placeholder="Building / Company name"/>
           </div>
         </div>
         <!-- حقول العمارة -->
