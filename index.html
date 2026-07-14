@@ -206,7 +206,8 @@ html[lang=en] .sidebar.open{transform:translateX(0)}
 .card-bottom{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}
 .card-price{font-size:.92rem;font-weight:600}
 .card-dots{display:flex;gap:4px}
-.cdot{width:10px;height:10px;border-radius:50%;border:1px solid var(--line)}
+.cdot{width:10px;height:10px;border-radius:50%;border:1px solid var(--line);cursor:pointer;transition:border-color .15s}
+.cdot-active{border-color:var(--ink)!important;border-width:2px}
 .card-btns{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .card-btn-buy{
   background:var(--ink);color:#fff;border:none;
@@ -831,6 +832,13 @@ html[lang=en] .contact-layout > div:last-child{order:1}
       <div class="prod-notice t"
            data-ar="يمكن معاينة المنتج عند الاستلام"
            data-en=" You may inspect your order upon delivery"></div>
+
+      <!-- Size Chart inline -->
+      <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--line)">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.85rem" class="t" data-ar="جدول المقاسات" data-en="Size Chart"></div>
+        <table class="size-table" id="inlineSizeTable" style="width:100%;font-size:.75rem"></table>
+        <p class="chart-note t" data-ar="* القياسات بالسنتيمتر — قياس واسع" data-en="* Measurements in cm — Oversized fit"></p>
+      </div>
     </div>
   </div>
 </div>
@@ -1235,14 +1243,16 @@ const IMG={
   'White':{'Dokan':'imgs/White Dokan.png','80s':'imgs/White 80s.png','Graffity':'imgs/White Graffity.png','English':'imgs/White English.png'},
   'Pink': {'Dokan':'imgs/Pink Dokan.png',  '80s':'imgs/Pink 80s.png', 'Graffity':'imgs/Pink Graffity.png', 'English':'imgs/Pink English.png'},
 };
-function mc(d){return COLORS.map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,img:IMG[c.key][d]}))}
+function mc(d){return COLORS.map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,key:c.key,img:IMG[c.key][d]}))}
+function mc2(d){return COLORS.filter(c=>c.key!=='Pink').map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,key:c.key,img:IMG[c.key][d]}))}
+
 
 const PRODUCTS=[
   {id:1,cat:'half',nameAr:'تيشرت دكان',nameEn:'Dokan Tee',descAr:' أوڤر سايز يونيسكس — تيشرت دكان - لمسة من التراث المصري الأصيل — قطن 100%',descEn:'Oversized unisex — Dokan Tee - A modern take on authentic Egyptian heritage — 100% cotton',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:[{nameAr:'أسود',nameEn:'Black',hex:'#0a0a0a',img:'imgs/Black Dokan.png'},{nameAr:'أبيض',nameEn:'White',hex:'#f0f0f0',img:'imgs/White Dokan.png'}]},
   {id:2,cat:'half',nameAr:'تيشرت الثمانينات ',nameEn:'80s Tee',descAr:' أوڤر سايز يونيسكس —  أوڤر سايز يونيسكس — تصميم كلاسيكي من الثمانينات — قطن 100%',descEn:'Oversized unisex — 80s collage design — 100% cotton',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
   {id:3,cat:'half',nameAr:'تيشرت جرافيتي',nameEn:'Graffiti Tee',descAr:'  أوڤر سايز يونيسكس — تيشرت جرافيتي - كُن أنت الرسام — قطن 100%',descEn:'Oversized unisex — Graffiti Tee - Be the Artist — 100% cotton ',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
   {id:4,cat:'half',nameAr:'تيشرت دكان رحلة التعلم',nameEn:'Dokan Learning Journey Tee',descAr:'  أوڤر سايز يونيسكس — تيشرت دكان- كن فخوراً بمحاولاتك — قطن 100%',descEn:'Oversized unisex — Be Proud of Your Attempts — 100% cotton',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
-  {id:5,cat:'full',nameAr:'تيشرت دكان — حجابي',nameEn:'Dokan Tee — Hijabi ',descAr:' أوڤر سايز بكم طويل — تيشرت دكان - لمسة من التراث المصري الأصيل— قطن 100%',descEn:'Oversized long sleeve — Hijabi — A modern take on authentic Egyptian heritage — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Dokan')},
+  {id:5,cat:'full',nameAr:'تيشرت دكان — حجابي',nameEn:'Dokan Tee — Hijabi ',descAr:' أوڤر سايز بكم طويل — تيشرت دكان - لمسة من التراث المصري الأصيل— قطن 100%',descEn:'Oversized long sleeve — Hijabi — A modern take on authentic Egyptian heritage — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc2('Dokan')},
   {id:6,cat:'full',nameAr:'تيشرت الثمانينات — حجابي',nameEn:'80s Tee — Hijabi ',descAr:' أوڤر سايز بكم طويل — تصميم كلاسيكي من الثمانينات— قطن 100%',descEn:'Oversized long sleeve — Hijabi — 80s collage design — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
   {id:7,cat:'full',nameAr:'تيشرت الجرافيتي — حجابي',nameEn:'Graffiti Tee — Hijabi',descAr:' أوڤر سايز بكم طويل — كُن أنت الرسام— قطن 100%',descEn:'Oversized long sleeve — Hijabi —  Be the Artist — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
   {id:8,cat:'full',nameAr:'تيشرت دكان رحلة التعلم — حجابي',nameEn:'Dokan Learning Journey Tee — Hijabi',descAr:' أوڤر سايز بكم طويل— تيشرت دكان- كن فخوراً بمحاولاتك — قطن 100% ',descEn:'Oversized long sleeve — Hijabi— Be Proud of Your Attempts — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
@@ -1342,39 +1352,76 @@ function closeSidebar(){
   document.body.style.overflow='';
 }
 
-function makeCard(p){
-  const c=p.colors[0],name=lang==='ar'?p.nameAr:p.nameEn;
+function makeCard(p,colorIdx=0){
+  const c=p.colors[colorIdx];
+  const colorKey=getColorKey(c);
+  const name=lang==='ar'?p.nameAr:p.nameEn;
+  const colorName=lang==='ar'?c.nameAr:c.nameEn;
   const cat=lang==='ar'?(p.cat==='half'?'كم قصير — يونيسكس':'كم طويل — حجابي'):(p.cat==='half'?'Half Sleeve — Unisex':'Long Sleeve — Hijabi');
-  const badge='';
-  const available=isProductAvailable(p);
-  const isFav=favorites.includes(p.id);
+  const available=isColorAvailable(p,colorKey);
+  const isFav=favorites.includes(p.id+'_'+colorKey);
   const buyTxt=lang==='ar'?(available?'اشتر الآن':'نفذت الكمية'):(available?'Buy Now':'Sold Out');
   const soldOverlay=!available?`<div class="card-sold-overlay"><span>${lang==='ar'?'نفذت الكمية':'Sold Out'}</span></div>`:'';
-  return `<div class="card" onclick="openProduct(${p.id})">
+  // دوايرة الألوان
+  const dots=p.colors.map((col,i)=>`<div class="cdot ${i===colorIdx?'cdot-active':''}" style="background:${col.hex};${col.hex==='#f0f0f0'?'border-color:#ccc':''}" onclick="event.stopPropagation();switchCardColor(${p.id},${i})"></div>`).join('');
+  return `<div class="card" onclick="openProductWithColor(${p.id},${colorIdx})">
     <div class="card-img" style="position:relative">
-      <img src="${c.img}" alt="${name}" loading="lazy"/>
-      ${badge?`<span class="card-badge">${badge}</span>`:''}
+      <img src="${c.img}" alt="${name}" loading="lazy" id="cardimg_${p.id}_${colorIdx}"/>
       ${soldOverlay}
-      <button class="fav-btn ${isFav?'active':''}" onclick="event.stopPropagation();toggleFav(${p.id})"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+      <button class="fav-btn ${isFav?'active':''}" onclick="event.stopPropagation();toggleFav(${p.id}+'_'+${JSON.stringify(colorKey)})"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
     </div>
     <div class="card-name">${name}</div>
-    <div class="card-cat">${cat}</div>
+    <div class="card-cat">${colorName} · ${cat}</div>
     <div class="card-bottom">
       <div class="card-price">${p.price} EGP</div>
-      <div class="card-dots">${p.colors.map(col=>`<div class="cdot" style="background:${col.hex};${col.hex==='#f0f0f0'?'border-color:#ccc':''}"></div>`).join('')}</div>
+      <div class="card-dots">${dots}</div>
     </div>
     <div class="card-btns">
-      <button class="card-btn-buy" ${!available?'disabled':''} onclick="event.stopPropagation();${available?`cardBuyNow(${p.id})`:''}">${buyTxt}</button>
-      <button class="add-quick" ${!available?'disabled':''} onclick="event.stopPropagation();${available?`quickAdd(${p.id})`:''}">${lang==='ar'?'أضف لعربة التسوق':'Add to Cart'}</button>
+      <button class="card-btn-buy" ${!available?'disabled':''} onclick="event.stopPropagation();${available?`cardBuyNowColor(${p.id},${colorIdx})`:''}">${buyTxt}</button>
+      <button class="add-quick" ${!available?'disabled':''} onclick="event.stopPropagation();${available?`quickAddColor(${p.id},${colorIdx})`:''}">${lang==='ar'?'أضف للعربة':'Add to Cart'}</button>
     </div>
   </div>`;
 }
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
 function renderGrids(){
-  document.getElementById('grid-half').innerHTML=PRODUCTS.filter(p=>p.cat==='half').map(makeCard).join('');
-  document.getElementById('grid-full').innerHTML=PRODUCTS.filter(p=>p.cat==='full').map(makeCard).join('');
+  const halfCards=shuffle(PRODUCTS.filter(p=>p.cat==='half').flatMap(p=>p.colors.map((_,i)=>makeCard(p,i))));
+  const fullCards=shuffle(PRODUCTS.filter(p=>p.cat==='full').flatMap(p=>p.colors.map((_,i)=>makeCard(p,i))));
+  document.getElementById('grid-half').innerHTML=halfCards.join('');
+  document.getElementById('grid-full').innerHTML=fullCards.join('');
   renderFavs();
 }
-function cardBuyNow(id){openQS(id,'buy')}
+
+function cardBuyNowColor(id,colorIdx){
+  const p=PRODUCTS.find(x=>x.id===id);
+  openQSWithColor(id,colorIdx,'buy');
+}
+function quickAddColor(id,colorIdx){
+  openQSWithColor(id,colorIdx,'add');
+}
+function cardBuyNow(id){openQSWithColor(id,0,'buy')}
+function openProductWithColor(id,colorIdx){
+  cur=PRODUCTS.find(x=>x.id===id);
+  selColor=colorIdx;
+  selSize=cur.sizes[1]||cur.sizes[0];
+  qty=1;
+  renderProd(cur);
+  showView('product');
+  document.getElementById('backBtn').classList.add('show');
+}
+function openQSWithColor(id,colorIdx,mode){
+  qsProduct=PRODUCTS.find(x=>x.id===id);
+  qsSelColor=colorIdx;
+  qsSelSize=null;
+  renderQS(mode);
+  document.getElementById('qsOverlay').classList.add('open');
+  document.getElementById('qsModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
 
 // ── FAVORITES ──
 function toggleFav(id){
@@ -1386,6 +1433,22 @@ function toggleFav(id){
   const sub=document.getElementById('sbFavCount');
   if(sub) sub.textContent=favorites.length+' items';
 }
+function renderInlineSizeChart(cat){
+  const tbl=document.getElementById('inlineSizeTable');
+  if(!tbl) return;
+  const isHijabi=cat==='full';
+  const hdr=lang==='ar'?
+    `<tr><th>المقاس</th><th>طول الجسم (سم)</th><th>عرض الجسم (سم)</th>${isHijabi?'<th>عرض الحافة (سم)</th>':''}</tr>`:
+    `<tr><th>Size</th><th>Body Length (cm)</th><th>Body Width (cm)</th>${isHijabi?'<th>Hem Width (cm)</th>':''}</tr>`;
+  const rows=[
+    ['S','68','54','58'],
+    ['M','70','57','61'],
+    ['L','72','60','64'],
+    ['XL','74','63','67'],
+    ['XXL','76','66','70'],
+  ].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td>${isHijabi?`<td>${r[3]}</td>`:''}</tr>`).join('');
+  tbl.innerHTML=`<thead>${hdr}</thead><tbody>${rows}</tbody>`;
+}
 function renderFavs(){
   const grid=document.getElementById('grid-favs');
   const empty=document.getElementById('favsEmpty');
@@ -1396,7 +1459,7 @@ function renderFavs(){
     if(empty){empty.style.display='block';empty.textContent=lang==='ar'?'لا يوجد منتجات في المفضلة':'No favorites yet'}
   } else {
     if(empty) empty.style.display='none';
-    grid.innerHTML=favProds.map(makeCard).join('');
+    grid.innerHTML=favProds.map(p=>makeCard(p,0)).join('');
   }
 }
 
@@ -1415,6 +1478,7 @@ function renderProd(p){
   document.getElementById('colorLabel').textContent=lang==='ar'?col.nameAr:col.nameEn;
   document.getElementById('qtyVal').value=qty;
   document.getElementById('buyNow').textContent=lang==='ar'?'اشتر الآن':'Buy Now';
+  renderInlineSizeChart(p.cat);
   document.getElementById('addCartBtn').textContent=lang==='ar'?'أضف لعربة التسوق':'Add to Cart';
   const notice=document.querySelector('#view-product .prod-notice');
   notice.textContent=lang==='ar'?notice.dataset.ar:notice.dataset.en;
