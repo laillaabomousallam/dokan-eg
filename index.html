@@ -1897,24 +1897,57 @@ function setBuildingType(btn,ar,en){
 
 // ── TRACK ORDER ──
 async function trackOrder(){
-  const val=document.getElementById('trackInput').value.trim();
+  let val=document.getElementById('trackInput').value.trim();
   const result=document.getElementById('trackResult');
   if(!val){result.innerHTML=`<p style="color:var(--muted);font-size:.82rem">${lang==='ar'?'من فضلك أدخل رقم الأوردر أو الموبايل':'Please enter your order number or phone'}</p>`;return}
   result.innerHTML=`<p style="color:var(--muted);font-size:.82rem">${lang==='ar'?'جاري البحث...':'Searching...'}</p>`;
-  // ابحث بـ order_number أو phone
+
+  // تحويل الأرقام العربية لإنجليزية
+  val=val.replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d).toString());
+  // شيل الكود الدولي لو موجود
+  const digits=val.replace(/\D/g,'');
+  const phoneVariants=new Set([val]);
+  if(digits.length>0){
+    phoneVariants.add(digits);
+    // بدون كود
+    if(digits.startsWith('20')) phoneVariants.add('0'+digits.slice(2));
+    if(digits.startsWith('002')) phoneVariants.add('0'+digits.slice(3));
+    // مع كود
+    if(digits.startsWith('0')) {
+      phoneVariants.add('20'+digits.slice(1));
+      phoneVariants.add('+20'+digits.slice(1));
+      phoneVariants.add('002'+digits.slice(1));
+    }
+    if(!digits.startsWith('0')&&!digits.startsWith('20')){
+      phoneVariants.add('0'+digits);
+      phoneVariants.add('+20'+digits);
+    }
+    // مع + في الأول
+    phoneVariants.add('+'+digits);
+  }
+
   let data=null,error=null;
+  // ابحث بـ order_number الأول
   const res1=await sb.from('orders')
     .select('order_number,first_name,last_name,phone,status,total,items,created_at,governorate,district,street,building_name,building_number,floor_number,apartment_number')
     .eq('order_number',val)
     .limit(5);
   if(res1.data&&res1.data.length){data=res1.data}
   else{
-    const res2=await sb.from('orders')
-      .select('order_number,first_name,last_name,phone,status,total,items,created_at,governorate,district,street,building_name,building_number,floor_number,apartment_number')
-      .eq('phone',val)
-      .order('created_at',{ascending:false})
-      .limit(5);
-    data=res2.data;error=res2.error;
+    // ابحث بكل variants الموبايل
+    let found=[];
+    for(const p of phoneVariants){
+      const res=await sb.from('orders')
+        .select('order_number,first_name,last_name,phone,status,total,items,created_at,governorate,district,street,building_name,building_number,floor_number,apartment_number')
+        .eq('phone',p)
+        .order('created_at',{ascending:false})
+        .limit(5);
+      if(res.data&&res.data.length){found=[...found,...res.data];error=null;}
+    }
+    // شيل duplicates
+    const seen=new Set();
+    data=found.filter(o=>{if(seen.has(o.order_number))return false;seen.add(o.order_number);return true;});
+    if(!data.length) error=true;
   }
   if(error||!data||!data.length){
     result.innerHTML=`<p style="color:var(--muted);font-size:.82rem;padding:1rem;background:#f2f2f2;border-radius:12px;text-align:center">${lang==='ar'?'مفيش طلبات بالرقم ده':'No orders found'}</p>`;
