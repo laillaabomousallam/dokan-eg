@@ -1237,18 +1237,24 @@ const COLORS=[
   {nameAr:'أسود',nameEn:'Black',hex:'#0a0a0a',key:'Black'},
   {nameAr:'أبيض',nameEn:'White',hex:'#f0f0f0',key:'White'},
   {nameAr:'وردي',nameEn:'Pink',hex:'#e8a0a0',key:'Pink'},
+  {nameAr:'برجاندي',nameEn:'Burgundy',hex:'#6b0f1a',key:'Burgundy'},
 ];
 const IMG={
   'Black':{'Dokan':'imgs/Black Dokan.png','80s':'imgs/Black 80s.png','Graffity':'imgs/Black Graffity.png','English':'imgs/Black English.png'},
   'White':{'Dokan':'imgs/White Dokan.png','80s':'imgs/White 80s.png','Graffity':'imgs/White Graffity.png','English':'imgs/White English.png'},
   'Pink': {'Dokan':'imgs/Pink Dokan.png',  '80s':'imgs/Pink 80s.png', 'Graffity':'imgs/Pink Graffity.png', 'English':'imgs/Pink English.png'},
+  'Burgundy':{'Dokan':'imgs/Red Dokan.png','80s':'imgs/Red Dokan.png','Graffity':'imgs/Red Dokan.png','English':'imgs/Red Dokan.png'},
 };
 function mc(d){return COLORS.map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,key:c.key,img:IMG[c.key][d]}))}
-function mc2(d){return COLORS.filter(c=>c.key!=='Pink').map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,key:c.key,img:IMG[c.key][d]}))}
-
+function mc2(d){return COLORS.filter(c=>c.key!=='Pink'&&c.key!=='Burgundy').map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,key:c.key,img:IMG[c.key][d]}))}
+function mcDokan(){return[
+  {nameAr:'أسود',nameEn:'Black',hex:'#0a0a0a',key:'Black',img:'imgs/Black Dokan.png'},
+  {nameAr:'أبيض',nameEn:'White',hex:'#f0f0f0',key:'White',img:'imgs/White Dokan.png'},
+  {nameAr:'برجاندي',nameEn:'Burgundy',hex:'#6b0f1a',key:'Burgundy',img:'imgs/Red Dokan.png'},
+]}
 
 const PRODUCTS=[
-  {id:1,cat:'half',nameAr:'تيشرت دكان',nameEn:'Dokan Tee',descAr:' أوڤر سايز يونيسكس — تيشرت دكان - لمسة من التراث المصري الأصيل — قطن 100%',descEn:'Oversized unisex — Dokan Tee - A modern take on authentic Egyptian heritage — 100% cotton',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:[{nameAr:'أسود',nameEn:'Black',hex:'#0a0a0a',img:'imgs/Black Dokan.png'},{nameAr:'أبيض',nameEn:'White',hex:'#f0f0f0',img:'imgs/White Dokan.png'}]},
+  {id:1,cat:'half',nameAr:'تيشرت دكان',nameEn:'Dokan Tee',descAr:' أوڤر سايز يونيسكس — تيشرت دكان - لمسة من التراث المصري الأصيل — قطن 100%',descEn:'Oversized unisex — Dokan Tee - A modern take on authentic Egyptian heritage — 100% cotton',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:mcDokan()},
   {id:2,cat:'half',nameAr:'تيشرت الثمانينات ',nameEn:'80s Tee',descAr:' أوڤر سايز يونيسكس —  أوڤر سايز يونيسكس — تصميم كلاسيكي من الثمانينات — قطن 100%',descEn:'Oversized unisex — 80s collage design — 100% cotton',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
   {id:3,cat:'half',nameAr:'تيشرت جرافيتي',nameEn:'Graffiti Tee',descAr:'  أوڤر سايز يونيسكس — تيشرت جرافيتي - كُن أنت الرسام — قطن 100%',descEn:'Oversized unisex — Graffiti Tee - Be the Artist — 100% cotton ',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
   {id:4,cat:'half',nameAr:'تيشرت دكان رحلة التعلم',nameEn:'Dokan Learning Journey Tee',descAr:'  أوڤر سايز يونيسكس — تيشرت دكان- كن فخوراً بمحاولاتك — قطن 100%',descEn:'Oversized unisex — Be Proud of Your Attempts — 100% cotton',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
@@ -1389,27 +1395,36 @@ function shuffle(arr){
   return a;
 }
 function renderGrids(){
-  function buildCards(prods){
-    // فصل كل لون في array منفصل
-    const byColor={};
+  function spreadCards(prods){
+    // افصل دكان عن الباقي
+    const dokanCards=[];const otherCards=[];
     prods.forEach(p=>p.colors.forEach((_,i)=>{
-      const key=p.colors[i].nameEn;
-      if(!byColor[key]) byColor[key]=[];
-      byColor[key].push(makeCard(p,i));
+      if(p.id===1||p.id===5) dokanCards.push({p,i});
+      else otherCards.push({p,i});
     }));
-    // دكان الأول في كل لون
-    const dokanFirst=(prods.find(p=>p.id===1)||prods[0]);
-    // تناوب الألوان عشان نفس المنتج مش جنب بعض
-    const colorKeys=Object.keys(byColor);
-    const result=[];
-    const maxLen=Math.max(...colorKeys.map(k=>byColor[k].length));
-    for(let i=0;i<maxLen;i++){
-      colorKeys.forEach(k=>{if(byColor[k][i]) result.push(byColor[k][i]);});
+    // shuffle الباقي
+    for(let i=otherCards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[otherCards[i],otherCards[j]]=[otherCards[j],otherCards[i]];}
+    // تأكد نفس المنتج مش جنب بعضه في الباقي
+    for(let i=1;i<otherCards.length;i++){
+      if(otherCards[i].p.id===otherCards[i-1].p.id){
+        for(let j=i+1;j<otherCards.length;j++){
+          if(otherCards[j].p.id!==otherCards[i-1].p.id){[otherCards[i],otherCards[j]]=[otherCards[j],otherCards[i]];break;}
+        }
+      }
     }
+    // رتب: أسود دكان، 3 كروت، أبيض دكان، 3 كروت، برجاندي دكان، باقي
+    const result=[];
+    const sorted=dokanCards.sort((a,b)=>a.i-b.i); // أسود(0)، أبيض(1)، برجاندي(2)
+    if(sorted[0]) result.push(makeCard(sorted[0].p,sorted[0].i));
+    result.push(...otherCards.slice(0,3).map(x=>makeCard(x.p,x.i)));
+    if(sorted[1]) result.push(makeCard(sorted[1].p,sorted[1].i));
+    result.push(...otherCards.slice(3,6).map(x=>makeCard(x.p,x.i)));
+    if(sorted[2]) result.push(makeCard(sorted[2].p,sorted[2].i));
+    result.push(...otherCards.slice(6).map(x=>makeCard(x.p,x.i)));
     return result.join('');
   }
-  document.getElementById('grid-half').innerHTML=buildCards(PRODUCTS.filter(p=>p.cat==='half'));
-  document.getElementById('grid-full').innerHTML=buildCards(PRODUCTS.filter(p=>p.cat==='full'));
+  document.getElementById('grid-half').innerHTML=spreadCards(PRODUCTS.filter(p=>p.cat==='half'));
+  document.getElementById('grid-full').innerHTML=spreadCards(PRODUCTS.filter(p=>p.cat==='full'));
   renderFavs();
 }
 
