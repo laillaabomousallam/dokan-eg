@@ -1389,10 +1389,27 @@ function shuffle(arr){
   return a;
 }
 function renderGrids(){
-  const halfCards=PRODUCTS.filter(p=>p.cat==='half').flatMap(p=>p.colors.map((_,i)=>makeCard(p,i)));
-  const fullCards=PRODUCTS.filter(p=>p.cat==='full').flatMap(p=>p.colors.map((_,i)=>makeCard(p,i)));
-  document.getElementById('grid-half').innerHTML=halfCards.join('');
-  document.getElementById('grid-full').innerHTML=fullCards.join('');
+  function buildCards(prods){
+    // فصل كل لون في array منفصل
+    const byColor={};
+    prods.forEach(p=>p.colors.forEach((_,i)=>{
+      const key=p.colors[i].nameEn;
+      if(!byColor[key]) byColor[key]=[];
+      byColor[key].push(makeCard(p,i));
+    }));
+    // دكان الأول في كل لون
+    const dokanFirst=(prods.find(p=>p.id===1)||prods[0]);
+    // تناوب الألوان عشان نفس المنتج مش جنب بعض
+    const colorKeys=Object.keys(byColor);
+    const result=[];
+    const maxLen=Math.max(...colorKeys.map(k=>byColor[k].length));
+    for(let i=0;i<maxLen;i++){
+      colorKeys.forEach(k=>{if(byColor[k][i]) result.push(byColor[k][i]);});
+    }
+    return result.join('');
+  }
+  document.getElementById('grid-half').innerHTML=buildCards(PRODUCTS.filter(p=>p.cat==='half'));
+  document.getElementById('grid-full').innerHTML=buildCards(PRODUCTS.filter(p=>p.cat==='full'));
   renderFavs();
 }
 
