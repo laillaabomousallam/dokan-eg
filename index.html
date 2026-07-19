@@ -23,7 +23,8 @@
 }
 html[lang=ar]{font-family:var(--body-ar)}
 html[lang=en]{font-family:var(--body-en);direction:ltr}
-body{background:var(--paper);color:var(--ink);min-height:100vh;overflow-x:hidden}
+html,body{overflow-x:hidden;max-width:100vw}
+body{background:var(--paper);color:var(--ink);min-height:100vh}
 img{display:block}
 button{font-family:inherit;cursor:pointer}
 
@@ -94,7 +95,7 @@ html[lang=ar] .lang-btn{border-right:none;border-left:1px solid var(--line)}
 .nav-pages-wrap{display:none}
 
 /* ─── VIEWS ─── */
-.view{display:none;padding-top:52px}
+.view{display:none;padding-top:52px;width:100%;overflow-x:hidden}
 .view.active{display:block}
 
 /* ─── HOME ─── */
@@ -1002,7 +1003,6 @@ html[lang=en] .contact-layout > div:last-child{order:1}
             <div class="pay-opt-sub t" data-ar="تحويل اونلاين قبل الشحن" data-en="Online transfer before shipping"></div></div>
           </label>
         </div>
-        <button class="place-btn t" data-ar="تأكيد الطلب" data-en="Place Order" id="placeOrderBtn"></button>
       </div>
       <div>
         <div class="order-box">
@@ -1014,6 +1014,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
           <div class="order-notice t"
                data-ar="يمكن معاينة المنتج عند الاستلام "
                data-en="✅ Inspect on delivery"></div>
+          <button class="place-btn t" data-ar="تأكيد الطلب" data-en="Place Order" id="placeOrderBtn"></button>
         </div>
       </div>
     </div>
@@ -1170,13 +1171,13 @@ html[lang=en] .contact-layout > div:last-child{order:1}
 
 <!-- TRACK ORDER -->
 <div class="view" id="view-track">
-  <div style="max-width:480px;margin:0 auto;padding:3rem 1.5rem 2rem">
+  <div style="max-width:480px;margin:0 auto;padding:3rem 1.5rem 2rem;width:100%;box-sizing:border-box">
     <div style="font-family:var(--display);font-size:1.8rem;font-weight:400;margin-bottom:.4rem" class="t" data-ar="الطلبات" data-en="Orders"></div>
     <p style="font-size:.82rem;color:var(--mid);margin-bottom:2rem;line-height:1.6" class="t" data-ar="أدخل رقم الطلب أو رقم موبايلك" data-en="Enter your order number or phone number"></p>
     <div style="display:flex;gap:.5rem;margin-bottom:1.5rem">
-      <input type="text" id="trackInput" style="flex:1;background:#e8e8e8;border:none;border-radius:20px;padding:12px 18px;font-size:.85rem;font-family:inherit;outline:none"
+      <input type="text" id="trackInput" style="flex:1;min-width:0;background:#e8e8e8;border:none;border-radius:20px;padding:12px 18px;font-size:.85rem;font-family:inherit;outline:none"
         placeholder="DKN-2026-XXXXX" onkeydown="if(event.key==='Enter')trackOrder()"/>
-      <button onclick="trackOrder()" style="background:#0a0a0a;color:#fff;border:none;border-radius:20px;padding:12px 20px;font-size:.72rem;font-weight:700;letter-spacing:.1em;cursor:pointer;white-space:nowrap" class="t" data-ar="بحث" data-en="Search"></button>
+      <button onclick="trackOrder()" style="background:#0a0a0a;color:#fff;border:none;border-radius:20px;padding:12px 16px;font-size:.72rem;font-weight:700;letter-spacing:.1em;cursor:pointer;white-space:nowrap;flex-shrink:0" class="t" data-ar="بحث" data-en="Search"></button>
     </div>
     <div id="trackResult"></div>
   </div>
@@ -1245,7 +1246,7 @@ const IMG={
   'Pink': {'Dokan':'imgs/Pink Dokan.png',  '80s':'imgs/Pink 80s.png', 'Graffity':'imgs/Pink Graffity.png', 'English':'imgs/Pink English.png'},
   'Burgundy':{'Dokan':'imgs/Red Dokan.png','80s':'imgs/Red Dokan.png','Graffity':'imgs/Red Dokan.png','English':'imgs/Red Dokan.png'},
 };
-function mc(d){return COLORS.map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,key:c.key,img:IMG[c.key][d]}))}
+function mc(d){return COLORS.filter(c=>c.key!=='Burgundy').map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,key:c.key,img:IMG[c.key][d]}))}
 function mc2(d){return COLORS.filter(c=>c.key!=='Pink'&&c.key!=='Burgundy').map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,key:c.key,img:IMG[c.key][d]}))}
 function mcDokan(){return[
   {nameAr:'أسود',nameEn:'Black',hex:'#0a0a0a',key:'Black',img:'imgs/Black Dokan.png'},
@@ -1258,7 +1259,7 @@ const PRODUCTS=[
   {id:2,cat:'half',nameAr:'تيشرت الثمانينات ',nameEn:'80s Tee',descAr:' أوڤر سايز يونيسكس —  أوڤر سايز يونيسكس — تصميم كلاسيكي من الثمانينات — قطن 100%',descEn:'Oversized unisex — 80s collage design — 100% cotton',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
   {id:3,cat:'half',nameAr:'تيشرت جرافيتي',nameEn:'Graffiti Tee',descAr:'  أوڤر سايز يونيسكس — تيشرت جرافيتي - كُن أنت الرسام — قطن 100%',descEn:'Oversized unisex — Graffiti Tee - Be the Artist — 100% cotton ',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
   {id:4,cat:'half',nameAr:'تيشرت دكان رحلة التعلم',nameEn:'Dokan Learning Journey Tee',descAr:'  أوڤر سايز يونيسكس — تيشرت دكان- كن فخوراً بمحاولاتك — قطن 100%',descEn:'Oversized unisex — Be Proud of Your Attempts — 100% cotton',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
-  {id:5,cat:'full',nameAr:'تيشرت دكان — حجابي',nameEn:'Dokan Tee — Hijabi ',descAr:' أوڤر سايز بكم طويل — تيشرت دكان - لمسة من التراث المصري الأصيل— قطن 100%',descEn:'Oversized long sleeve — Hijabi — A modern take on authentic Egyptian heritage — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc2('Dokan')},
+  {id:5,cat:'full',nameAr:'تيشرت دكان — حجابي',nameEn:'Dokan Tee — Hijabi ',descAr:' أوڤر سايز بكم طويل — تيشرت دكان - لمسة من التراث المصري الأصيل— قطن 100%',descEn:'Oversized long sleeve — Hijabi — A modern take on authentic Egyptian heritage — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:[{nameAr:'أسود',nameEn:'Black',hex:'#0a0a0a',key:'Black',img:'imgs/Black Dokan.png'},{nameAr:'أبيض',nameEn:'White',hex:'#f0f0f0',key:'White',img:'imgs/White Dokan.png'}]},
   {id:6,cat:'full',nameAr:'تيشرت الثمانينات — حجابي',nameEn:'80s Tee — Hijabi ',descAr:' أوڤر سايز بكم طويل — تصميم كلاسيكي من الثمانينات— قطن 100%',descEn:'Oversized long sleeve — Hijabi — 80s collage design — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
   {id:7,cat:'full',nameAr:'تيشرت الجرافيتي — حجابي',nameEn:'Graffiti Tee — Hijabi',descAr:' أوڤر سايز بكم طويل — كُن أنت الرسام— قطن 100%',descEn:'Oversized long sleeve — Hijabi —  Be the Artist — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
   {id:8,cat:'full',nameAr:'تيشرت دكان رحلة التعلم — حجابي',nameEn:'Dokan Learning Journey Tee — Hijabi',descAr:' أوڤر سايز بكم طويل— تيشرت دكان- كن فخوراً بمحاولاتك — قطن 100% ',descEn:'Oversized long sleeve — Hijabi— Be Proud of Your Attempts — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
@@ -1271,7 +1272,6 @@ function showView(n){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+n).classList.add('active');
   if(!['product','checkout','success'].includes(n))prevView=n;
-  // أظهر/أخفي زرار الرجوع
   const btn=document.getElementById('backBtn');
   if(n==='home') btn.classList.remove('show');
   else btn.classList.add('show');
@@ -1279,7 +1279,25 @@ function showView(n){
   if(last!==n) viewHistory.push(n);
   if(viewHistory.length>20) viewHistory.shift();
   window.scrollTo(0,0);
+  if(n!=='home') history.pushState({view:n},'','');
 }
+
+window.addEventListener('popstate',function(){
+  if(viewHistory.length>1){
+    viewHistory.pop();
+    const prev=viewHistory[viewHistory.length-1]||'home';
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+prev).classList.add('active');
+    if(!['product','checkout','success'].includes(prev))prevView=prev;
+    const btn=document.getElementById('backBtn');
+    if(prev==='home') btn.classList.remove('show');
+    else btn.classList.add('show');
+    window.scrollTo(0,0);
+    if(prev!=='home') history.pushState({view:prev},'','');
+  } else {
+    showView('home');
+  }
+});
 
 function navGoBack(){
   // شيل الصفحة الحالية
@@ -1395,36 +1413,33 @@ function shuffle(arr){
   return a;
 }
 function renderGrids(){
-  function spreadCards(prods){
-    // افصل دكان عن الباقي
-    const dokanCards=[];const otherCards=[];
-    prods.forEach(p=>p.colors.forEach((_,i)=>{
-      if(p.id===1||p.id===5) dokanCards.push({p,i});
-      else otherCards.push({p,i});
-    }));
-    // shuffle الباقي
-    for(let i=otherCards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[otherCards[i],otherCards[j]]=[otherCards[j],otherCards[i]];}
-    // تأكد نفس المنتج مش جنب بعضه في الباقي
-    for(let i=1;i<otherCards.length;i++){
-      if(otherCards[i].p.id===otherCards[i-1].p.id){
-        for(let j=i+1;j<otherCards.length;j++){
-          if(otherCards[j].p.id!==otherCards[i-1].p.id){[otherCards[i],otherCards[j]]=[otherCards[j],otherCards[i]];break;}
+  function buildCards(prods){
+    const dokanCards=prods.filter(p=>p.id===1||p.id===5).flatMap(p=>p.colors.map((_,i)=>({p,i}))).sort((a,b)=>a.i-b.i);
+    // الباقي يدوي — كل منتج × كل لون بترتيب مش متسلسل
+    const others=prods.filter(p=>p.id!==1&&p.id!==5);
+    // ترتيب يدوي: منتج 0 لون 0، منتج 1 لون 2، منتج 2 لون 1، منتج 0 لون 1، منتج 1 لون 0، منتج 2 لون 2، منتج 0 لون 2، منتج 1 لون 1، منتج 2 لون 0
+    const manual=[
+      [0,0],[1,2],[2,1],[3,1],
+      [0,1],[1,0],[2,2],[3,0],
+      [0,2],[1,1],[2,0],[3,2],
+    ];
+    const otherCards=manual.filter(([pi,ci])=>others[pi]&&others[pi].colors[ci]).map(([pi,ci])=>({p:others[pi],i:ci}));
+
+    const result=[];
+    const gap=2;let oi=0;
+    dokanCards.forEach((dk,di)=>{
+      result.push(makeCard(dk.p,dk.i));
+      if(di<dokanCards.length-1){
+        for(let g=0;g<gap&&oi<otherCards.length;g++,oi++){
+          result.push(makeCard(otherCards[oi].p,otherCards[oi].i));
         }
       }
-    }
-    // رتب: أسود دكان، 3 كروت، أبيض دكان، 3 كروت، برجاندي دكان، باقي
-    const result=[];
-    const sorted=dokanCards.sort((a,b)=>a.i-b.i); // أسود(0)، أبيض(1)، برجاندي(2)
-    if(sorted[0]) result.push(makeCard(sorted[0].p,sorted[0].i));
-    result.push(...otherCards.slice(0,3).map(x=>makeCard(x.p,x.i)));
-    if(sorted[1]) result.push(makeCard(sorted[1].p,sorted[1].i));
-    result.push(...otherCards.slice(3,6).map(x=>makeCard(x.p,x.i)));
-    if(sorted[2]) result.push(makeCard(sorted[2].p,sorted[2].i));
-    result.push(...otherCards.slice(6).map(x=>makeCard(x.p,x.i)));
+    });
+    while(oi<otherCards.length){result.push(makeCard(otherCards[oi].p,otherCards[oi].i));oi++;}
     return result.join('');
   }
-  document.getElementById('grid-half').innerHTML=spreadCards(PRODUCTS.filter(p=>p.cat==='half'));
-  document.getElementById('grid-full').innerHTML=spreadCards(PRODUCTS.filter(p=>p.cat==='full'));
+  document.getElementById('grid-half').innerHTML=buildCards(PRODUCTS.filter(p=>p.cat==='half'));
+  document.getElementById('grid-full').innerHTML=buildCards(PRODUCTS.filter(p=>p.cat==='full'));
   renderFavs();
 }
 
