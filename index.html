@@ -640,6 +640,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
   /* checkout */
   .co-layout{grid-template-columns:1fr}
   .order-box{position:static}
+  #placeOrderBtn{width:100%!important}
   .field-row{grid-template-columns:1fr}
   .co-wrap{padding:1.5rem 1rem}
   /* size chart */
@@ -1018,7 +1019,7 @@ html[lang=en] .contact-layout > div:last-child{order:1}
       </div>
     </div>
     <div style="max-width:980px;margin:2rem 0 3rem">
-      <button class="place-btn t" data-ar="تأكيد الطلب" data-en="Place Order" id="placeOrderBtn" style="width:100%"></button>
+      <button class="place-btn t" data-ar="تأكيد الطلب" data-en="Place Order" id="placeOrderBtn" style="width:calc(100% - 360px - 3rem)"></button>
     </div>
   </div>
 </div>
@@ -1239,29 +1240,28 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const COLORS=[
   {nameAr:'أسود',nameEn:'Black',hex:'#0a0a0a',key:'Black'},
   {nameAr:'أبيض',nameEn:'White',hex:'#f0f0f0',key:'White'},
-  {nameAr:'وردي',nameEn:'Pink',hex:'#e8a0a0',key:'Pink'},
-  {nameAr:'برجاندي',nameEn:'Burgundy',hex:'#6b0f1a',key:'Burgundy'},
+  {nameAr:'برجاندي',nameEn:'Burgundy',hex:'#800020',key:'Burgundy'},
+  {nameAr:'برجاندي',nameEn:'Burgundy',hex:'#800020',key:'Burgundy'},
 ];
 const IMG={
   'Black':{'Dokan':'imgs/Black Dokan.png','80s':'imgs/Black 80s.png','Graffity':'imgs/Black Graffity.png','English':'imgs/Black English.png'},
   'White':{'Dokan':'imgs/White Dokan.png','80s':'imgs/White 80s.png','Graffity':'imgs/White Graffity.png','English':'imgs/White English.png'},
-  'Pink': {'Dokan':'imgs/Pink Dokan.png',  '80s':'imgs/Pink 80s.png', 'Graffity':'imgs/Pink Graffity.png', 'English':'imgs/Pink English.png'},
+  'Burgundy': {'Dokan':'imgs/Red Dokan.png','80s':'imgs/Red 80s.png','Graffity':'imgs/Red Graffity.png','English':'imgs/Red English.png'},
   'Burgundy':{'Dokan':'imgs/Red Dokan.png','80s':'imgs/Red Dokan.png','Graffity':'imgs/Red Dokan.png','English':'imgs/Red Dokan.png'},
 };
-function mc(d){return COLORS.filter(c=>c.key!=='Burgundy').map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,key:c.key,img:IMG[c.key][d]}))}
-function mc2(d){return COLORS.filter(c=>c.key!=='Pink'&&c.key!=='Burgundy').map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,key:c.key,img:IMG[c.key][d]}))}
+function mc(d){return COLORS.map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,key:c.key,img:IMG[c.key][d]}))}
+function mc2(d){return COLORS.map(c=>({nameAr:c.nameAr,nameEn:c.nameEn,hex:c.hex,key:c.key,img:IMG[c.key][d]}))}
 function mcDokan(){return[
   {nameAr:'أسود',nameEn:'Black',hex:'#0a0a0a',key:'Black',img:'imgs/Black Dokan.png'},
   {nameAr:'أبيض',nameEn:'White',hex:'#f0f0f0',key:'White',img:'imgs/White Dokan.png'},
-  {nameAr:'برجاندي',nameEn:'Burgundy',hex:'#6b0f1a',key:'Burgundy',img:'imgs/Red Dokan.png'},
 ]}
 
 const PRODUCTS=[
-  {id:1,cat:'half',nameAr:'تيشرت دكان',nameEn:'Dokan Tee',descAr:' أوڤر سايز يونيسكس — تيشرت دكان - لمسة من التراث المصري الأصيل — قطن 100%',descEn:'Oversized unisex — Dokan Tee - A modern take on authentic Egyptian heritage — 100% cotton',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:mcDokan()},
+  {id:1,cat:'half',nameAr:'تيشرت دكان',nameEn:'Dokan Tee',descAr:' أوڤر سايز يونيسكس — تيشرت دكان - لمسة من التراث المصري الأصيل — قطن 100%',descEn:'Oversized unisex — Dokan Tee - A modern take on authentic Egyptian heritage — 100% cotton',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Dokan')},
   {id:2,cat:'half',nameAr:'تيشرت الثمانينات ',nameEn:'80s Tee',descAr:' أوڤر سايز يونيسكس —  أوڤر سايز يونيسكس — تصميم كلاسيكي من الثمانينات — قطن 100%',descEn:'Oversized unisex — 80s collage design — 100% cotton',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
   {id:3,cat:'half',nameAr:'تيشرت جرافيتي',nameEn:'Graffiti Tee',descAr:'  أوڤر سايز يونيسكس — تيشرت جرافيتي - كُن أنت الرسام — قطن 100%',descEn:'Oversized unisex — Graffiti Tee - Be the Artist — 100% cotton ',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
   {id:4,cat:'half',nameAr:'تيشرت دكان رحلة التعلم',nameEn:'Dokan Learning Journey Tee',descAr:'  أوڤر سايز يونيسكس — تيشرت دكان- كن فخوراً بمحاولاتك — قطن 100%',descEn:'Oversized unisex — Be Proud of Your Attempts — 100% cotton',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
-  {id:5,cat:'full',nameAr:'تيشرت دكان — حجابي',nameEn:'Dokan Tee — Hijabi ',descAr:' أوڤر سايز بكم طويل — تيشرت دكان - لمسة من التراث المصري الأصيل— قطن 100%',descEn:'Oversized long sleeve — Hijabi — A modern take on authentic Egyptian heritage — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:[{nameAr:'أسود',nameEn:'Black',hex:'#0a0a0a',key:'Black',img:'imgs/Black Dokan.png'},{nameAr:'أبيض',nameEn:'White',hex:'#f0f0f0',key:'White',img:'imgs/White Dokan.png'}]},
+  {id:5,cat:'full',nameAr:'تيشرت دكان — حجابي',nameEn:'Dokan Tee — Hijabi ',descAr:' أوڤر سايز بكم طويل — تيشرت دكان - لمسة من التراث المصري الأصيل— قطن 100%',descEn:'Oversized long sleeve — Hijabi — A modern take on authentic Egyptian heritage — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc2('Dokan')},
   {id:6,cat:'full',nameAr:'تيشرت الثمانينات — حجابي',nameEn:'80s Tee — Hijabi ',descAr:' أوڤر سايز بكم طويل — تصميم كلاسيكي من الثمانينات— قطن 100%',descEn:'Oversized long sleeve — Hijabi — 80s collage design — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
   {id:7,cat:'full',nameAr:'تيشرت الجرافيتي — حجابي',nameEn:'Graffiti Tee — Hijabi',descAr:' أوڤر سايز بكم طويل — كُن أنت الرسام— قطن 100%',descEn:'Oversized long sleeve — Hijabi —  Be the Artist — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
   {id:8,cat:'full',nameAr:'تيشرت دكان رحلة التعلم — حجابي',nameEn:'Dokan Learning Journey Tee — Hijabi',descAr:' أوڤر سايز بكم طويل— تيشرت دكان- كن فخوراً بمحاولاتك — قطن 100% ',descEn:'Oversized long sleeve — Hijabi— Be Proud of Your Attempts — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
@@ -2144,7 +2144,7 @@ async function renderAdmin(){
   const {data}=await sb.from('inventory').select('*').order('product_id').order('size').order('color');
   if(!data){content.innerHTML='<p>Error loading inventory</p>';return}
 
-  const colorNames={'Black':'أسود','White':'أبيض','Pink':'وردي'};
+  const colorNames={'Black':'أسود','White':'أبيض','Burgundy':'برجاندي'};
   const sizeOrder=['S','M','L','XL','XXL'];
   let html='';
 
