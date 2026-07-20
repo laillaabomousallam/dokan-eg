@@ -1358,6 +1358,8 @@ function applyLang(){
   const ctBtn=document.getElementById('ctSubmit');if(ctBtn)ctBtn.textContent=lang==='ar'?'إرسال':'Send Message';
   const ba=document.getElementById('backArrow');if(ba)ba.textContent=lang==='ar'?'←':'→';
   renderGrids();if(cur)renderProd(cur);renderCart();renderCheckout();
+  // إعادة رسم نتايج الطلبات لو موجودة
+  if(document.getElementById('trackResult')&&document.getElementById('trackResult').innerHTML.trim()) trackOrder();
 }
 function toggleLang(){lang=lang==='ar'?'en':'ar';applyLang()}
 
