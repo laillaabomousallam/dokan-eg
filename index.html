@@ -861,14 +861,12 @@ html[lang=en] .contact-layout > div:last-child{order:1}
           <th>Size</th>
           <th class="t" data-ar="طول الجسم (سم)" data-en="Body Length (cm)"></th>
           <th class="t" data-ar="عرض الجسم (سم)" data-en="Body Width (cm)"></th>
-          <th class="t" data-ar="عرض الحافة (سم)" data-en="Hem Width (cm)"></th>
         </tr></thead>
         <tbody>
-          <tr><td>S</td><td>68</td><td>54</td><td>58</td></tr>
-          <tr><td>M</td><td>70</td><td>57</td><td>61</td></tr>
-          <tr><td>L</td><td>72</td><td>60</td><td>64</td></tr>
-          <tr><td>XL</td><td>74</td><td>63</td><td>67</td></tr>
-          <tr><td>XXL</td><td>76</td><td>66</td><td>70</td></tr>
+          <tr><td>S</td><td>68</td><td>54</td></tr>
+          <tr><td>M</td><td>68</td><td>57</td></tr>
+          <tr><td>L</td><td>70</td><td>60</td></tr>
+          <tr><td>XL</td><td>70</td><td>63</td></tr>
         </tbody>
       </table>
       <p class="chart-note t" data-ar="* القياسات بالسنتيمتر — قياس أوڤر سايز" data-en="* Measurements in cm — Oversized fit"></p>
@@ -886,7 +884,6 @@ html[lang=en] .contact-layout > div:last-child{order:1}
           <tr><td>M</td><td>70</td><td>57</td></tr>
           <tr><td>L</td><td>72</td><td>60</td></tr>
           <tr><td>XL</td><td>74</td><td>63</td></tr>
-          <tr><td>XXL</td><td>76</td><td>66</td></tr>
         </tbody>
       </table>
       <p class="chart-note t" data-ar="* القياسات بالسنتيمتر — أوڤر سايز" data-en="* Measurements in cm — Oversized fit"></p>
@@ -1255,14 +1252,14 @@ function mcDokan(){return[
 ]}
 
 const PRODUCTS=[
-  {id:1,cat:'half',nameAr:'تيشرت دكان',nameEn:'Dokan Tee',descAr:' أوڤر سايز يونيسكس — تيشرت دكان - لمسة من التراث المصري الأصيل — قطن 100%',descEn:'Oversized unisex — Dokan Tee - A modern take on authentic Egyptian heritage — 100% cotton',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Dokan')},
-  {id:2,cat:'half',nameAr:'تيشرت الثمانينات ',nameEn:'80s Tee',descAr:' أوڤر سايز يونيسكس —  أوڤر سايز يونيسكس — تصميم كلاسيكي من الثمانينات — قطن 100%',descEn:'Oversized unisex — 80s collage design — 100% cotton',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
-  {id:3,cat:'half',nameAr:'تيشرت جرافيتي',nameEn:'Graffiti Tee',descAr:'  أوڤر سايز يونيسكس — تيشرت جرافيتي - كُن أنت الرسام — قطن 100%',descEn:'Oversized unisex — Graffiti Tee - Be the Artist — 100% cotton ',price:650,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
-  {id:4,cat:'half',nameAr:'تيشرت دكان رحلة التعلم',nameEn:'Dokan Learning Journey Tee',descAr:'  أوڤر سايز يونيسكس — تيشرت دكان- كن فخوراً بمحاولاتك — قطن 100%',descEn:'Oversized unisex — Be Proud of Your Attempts — 100% cotton',price:600,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
-  {id:5,cat:'full',nameAr:'تيشرت دكان — حجابي',nameEn:'Dokan Tee — Hijabi ',descAr:' أوڤر سايز بكم طويل — تيشرت دكان - لمسة من التراث المصري الأصيل— قطن 100%',descEn:'Oversized long sleeve — Hijabi — A modern take on authentic Egyptian heritage — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc2('Dokan')},
-  {id:6,cat:'full',nameAr:'تيشرت الثمانينات — حجابي',nameEn:'80s Tee — Hijabi ',descAr:' أوڤر سايز بكم طويل — تصميم كلاسيكي من الثمانينات— قطن 100%',descEn:'Oversized long sleeve — Hijabi — 80s collage design — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('80s')},
-  {id:7,cat:'full',nameAr:'تيشرت الجرافيتي — حجابي',nameEn:'Graffiti Tee — Hijabi',descAr:' أوڤر سايز بكم طويل — كُن أنت الرسام— قطن 100%',descEn:'Oversized long sleeve — Hijabi —  Be the Artist — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('Graffity')},
-  {id:8,cat:'full',nameAr:'تيشرت دكان رحلة التعلم — حجابي',nameEn:'Dokan Learning Journey Tee — Hijabi',descAr:' أوڤر سايز بكم طويل— تيشرت دكان- كن فخوراً بمحاولاتك — قطن 100% ',descEn:'Oversized long sleeve — Hijabi— Be Proud of Your Attempts — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL','XXL'],colors:mc('English')},
+  {id:1,cat:'half',nameAr:'تيشرت دكان',nameEn:'Dokan Tee',descAr:' أوڤر سايز يونيسكس — تيشرت دكان - لمسة من التراث المصري الأصيل — قطن 100%',descEn:'Oversized unisex — Dokan Tee - A modern take on authentic Egyptian heritage — 100% cotton',price:650,badge:null,sizes:['S','M','L','XL'],colors:mc('Dokan')},
+  {id:2,cat:'half',nameAr:'تيشرت الثمانينات ',nameEn:'80s Tee',descAr:' أوڤر سايز يونيسكس —  أوڤر سايز يونيسكس — تصميم كلاسيكي من الثمانينات — قطن 100%',descEn:'Oversized unisex — 80s collage design — 100% cotton',price:600,badge:null,sizes:['S','M','L','XL'],colors:mc('80s')},
+  {id:3,cat:'half',nameAr:'تيشرت جرافيتي',nameEn:'Graffiti Tee',descAr:'  أوڤر سايز يونيسكس — تيشرت جرافيتي - كُن أنت الرسام — قطن 100%',descEn:'Oversized unisex — Graffiti Tee - Be the Artist — 100% cotton ',price:650,badge:null,sizes:['S','M','L','XL'],colors:mc('Graffity')},
+  {id:4,cat:'half',nameAr:'تيشرت دكان رحلة التعلم',nameEn:'Dokan Learning Journey Tee',descAr:'  أوڤر سايز يونيسكس — تيشرت دكان- كن فخوراً بمحاولاتك — قطن 100%',descEn:'Oversized unisex — Be Proud of Your Attempts — 100% cotton',price:600,badge:null,sizes:['S','M','L','XL'],colors:mc('English')},
+  {id:5,cat:'full',nameAr:'تيشرت دكان — حجابي',nameEn:'Dokan Tee — Hijabi ',descAr:' أوڤر سايز بكم طويل — تيشرت دكان - لمسة من التراث المصري الأصيل— قطن 100%',descEn:'Oversized long sleeve — Hijabi — A modern take on authentic Egyptian heritage — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL'],colors:mc2('Dokan')},
+  {id:6,cat:'full',nameAr:'تيشرت الثمانينات — حجابي',nameEn:'80s Tee — Hijabi ',descAr:' أوڤر سايز بكم طويل — تصميم كلاسيكي من الثمانينات— قطن 100%',descEn:'Oversized long sleeve — Hijabi — 80s collage design — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL'],colors:mc('80s')},
+  {id:7,cat:'full',nameAr:'تيشرت الجرافيتي — حجابي',nameEn:'Graffiti Tee — Hijabi',descAr:' أوڤر سايز بكم طويل — كُن أنت الرسام— قطن 100%',descEn:'Oversized long sleeve — Hijabi —  Be the Artist — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL'],colors:mc('Graffity')},
+  {id:8,cat:'full',nameAr:'تيشرت دكان رحلة التعلم — حجابي',nameEn:'Dokan Learning Journey Tee — Hijabi',descAr:' أوڤر سايز بكم طويل— تيشرت دكان- كن فخوراً بمحاولاتك — قطن 100% ',descEn:'Oversized long sleeve — Hijabi— Be Proud of Your Attempts — 100% cotton',price:700,badge:null,sizes:['S','M','L','XL'],colors:mc('English')},
 ];
 
 let lang='en',cart=JSON.parse(localStorage.getItem('dokan_cart')||'[]'),cur=null,selColor=0,selSize=null,qty=1,prevView='home',toastTimer=null;
@@ -1486,15 +1483,21 @@ function renderInlineSizeChart(cat){
   if(!tbl) return;
   const isHijabi=cat==='full';
   const hdr=lang==='ar'?
-    `<tr><th>المقاس</th><th>طول الجسم (سم)</th><th>عرض الجسم (سم)</th>${isHijabi?'<th>عرض الحافة (سم)</th>':''}</tr>`:
-    `<tr><th>Size</th><th>Body Length (cm)</th><th>Body Width (cm)</th>${isHijabi?'<th>Hem Width (cm)</th>':''}</tr>`;
-  const rows=[
-    ['S','68','54','58'],
-    ['M','70','57','61'],
-    ['L','72','60','64'],
-    ['XL','74','63','67'],
-    ['XXL','76','66','70'],
-  ].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td>${isHijabi?`<td>${r[3]}</td>`:''}</tr>`).join('');
+    `<tr><th>المقاس</th><th>طول الجسم (سم)</th><th>عرض الجسم (سم)</th></tr>`:
+    `<tr><th>Size</th><th>Body Length (cm)</th><th>Body Width (cm)</th></tr>`;
+  const halfRows=[
+    ['S','68','54'],
+    ['M','70','57'],
+    ['L','72','60'],
+    ['XL','74','63'],
+  ];
+  const hijabiRows=[
+    ['S','68','54'],
+    ['M','68','57'],
+    ['L','70','60'],
+    ['XL','70','63'],
+  ];
+  const rows=(isHijabi?hijabiRows:halfRows).map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
   tbl.innerHTML=`<thead>${hdr}</thead><tbody>${rows}</tbody>`;
 }
 function renderFavs(){
@@ -2142,7 +2145,7 @@ async function renderAdmin(){
   if(!data){content.innerHTML='<p>Error loading inventory</p>';return}
 
   const colorNames={'Black':'أسود','White':'أبيض','Burgundy':'برجاندي'};
-  const sizeOrder=['S','M','L','XL','XXL'];
+  const sizeOrder=['S','M','L','XL'];
   let html='';
 
   PRODUCTS.forEach(p=>{
