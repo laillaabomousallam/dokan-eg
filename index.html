@@ -2248,7 +2248,8 @@ if(window.location.hash==='#admin'){
 });
 
 applyLang();
-// Android back button - حط state أولي
+// Android back button - حط states عشان الزرار ميخرجش من الموقع
+history.pushState({view:'home'},'','');
 history.pushState({view:'home'},'','');
 
 // تتبع الزيارات
