@@ -1279,31 +1279,23 @@ function showView(n){
   if(last!==n) viewHistory.push(n);
   if(viewHistory.length>20) viewHistory.shift();
   window.scrollTo(0,0);
-  if(n!=='home') history.pushState({view:n},'','');
+  history.pushState({view:n,len:viewHistory.length},'','');
 }
 
 window.addEventListener('popstate',function(e){
-  if(viewHistory.length>1){
-    viewHistory.pop();
-    const prev=viewHistory[viewHistory.length-1]||'home';
-    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-    document.getElementById('view-'+prev).classList.add('active');
-    if(!['product','checkout','success'].includes(prev))prevView=prev;
-    const btn=document.getElementById('backBtn');
-    if(prev==='home') btn.classList.remove('show');
-    else btn.classList.add('show');
-    window.scrollTo(0,0);
-    // أضيف state جديد عشان الزرار يفضل يشتغل
-    if(prev!=='home') history.pushState({view:prev},'','');
-  } else {
-    // لو مفيش history خد للهوم بس من غير ما تخرج من الموقع
-    viewHistory=['home'];
-    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-    document.getElementById('view-home').classList.add('active');
-    document.getElementById('backBtn').classList.remove('show');
-    window.scrollTo(0,0);
-    history.pushState({view:'home'},'','');
-  }
+  // شيل الصفحة الحالية من الـ history
+  viewHistory.pop();
+  const prev=viewHistory[viewHistory.length-1]||'home';
+  // عرض الصفحة السابقة من غير ما تضيف state جديد
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+prev).classList.add('active');
+  if(!['product','checkout','success'].includes(prev))prevView=prev;
+  const btn=document.getElementById('backBtn');
+  if(prev==='home') btn.classList.remove('show');
+  else btn.classList.add('show');
+  window.scrollTo(0,0);
+  // لو وصلنا للهوم حط state عشان الضغطة الجاية ترجع للهوم مش تخرج
+  if(prev==='home') history.pushState({view:'home',len:1},'','');
 });
 
 function navGoBack(){
@@ -2248,9 +2240,7 @@ if(window.location.hash==='#admin'){
 });
 
 applyLang();
-// Android back button - حط states عشان الزرار ميخرجش من الموقع
-history.pushState({view:'home'},'','');
-history.pushState({view:'home'},'','');
+history.replaceState({view:'home',len:1},'','');
 
 // تتبع الزيارات
 sb.from('analytics').insert([{event:'page_view'}]).then(()=>{});
