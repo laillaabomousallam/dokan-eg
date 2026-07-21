@@ -1282,7 +1282,7 @@ function showView(n){
   if(n!=='home') history.pushState({view:n},'','');
 }
 
-window.addEventListener('popstate',function(){
+window.addEventListener('popstate',function(e){
   if(viewHistory.length>1){
     viewHistory.pop();
     const prev=viewHistory[viewHistory.length-1]||'home';
@@ -1293,9 +1293,16 @@ window.addEventListener('popstate',function(){
     if(prev==='home') btn.classList.remove('show');
     else btn.classList.add('show');
     window.scrollTo(0,0);
+    // أضيف state جديد عشان الزرار يفضل يشتغل
     if(prev!=='home') history.pushState({view:prev},'','');
   } else {
-    showView('home');
+    // لو مفيش history خد للهوم بس من غير ما تخرج من الموقع
+    viewHistory=['home'];
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-home').classList.add('active');
+    document.getElementById('backBtn').classList.remove('show');
+    window.scrollTo(0,0);
+    history.pushState({view:'home'},'','');
   }
 });
 
@@ -2241,6 +2248,8 @@ if(window.location.hash==='#admin'){
 });
 
 applyLang();
+// Android back button - حط state أولي
+history.pushState({view:'home'},'','');
 
 // تتبع الزيارات
 sb.from('analytics').insert([{event:'page_view'}]).then(()=>{});
